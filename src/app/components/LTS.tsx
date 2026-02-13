@@ -12,15 +12,14 @@ const LTS = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
+    <div className="min-h-[100dvh] bg-black flex items-center justify-center p-4">
       {/* Card */}
       <div
         className="
           relative
-          w-full h-screen
+          w-full max-w-[450px] h-[96dvh] max-h-[760px]
           bg-black
-          sm:min-w-[450px] sm:h-[760px]
-          sm:border sm:border-gray-700 sm:rounded-2xl
+          rounded-2xl
           overflow-hidden
         "
         style={{
@@ -42,7 +41,7 @@ const LTS = () => {
         <div className="absolute inset-0 bg-black/40" />
 
         {/* Text Content */}
-        <div className="absolute left-1/2 bottom-[20%] z-10 w-full -translate-x-1/2 px-6">
+        <div className="absolute left-1/2 bottom-24 sm:bottom-[20%] z-10 w-full -translate-x-1/2 px-6">
           <div className="relative mx-auto w-full max-w-[360px] text-left">
             <div
               className={`transition-all duration-500 ease-out ${
