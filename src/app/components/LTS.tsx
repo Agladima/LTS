@@ -1,40 +1,37 @@
-// app/components/LTS.tsx
 import React from "react";
 
 const LTS = () => {
   return (
-    <div
-      className="
-        bg-gray-900 
-        text-white 
-        rounded-2xl 
-        shadow-lg 
-        overflow-hidden
-        mx-auto my-10
-        w-[450px] h-[800px]      /* Desktop card size */
-        sm:w-full sm:h-screen sm:rounded-none sm:shadow-none sm:my-0
-      "
-    >
-      {/* Top Image */}
-      <div className="w-full h-1/2 sm:h-1/3 bg-#1E1E1E">
-        <img
-          src="/bg1.png"
-          alt="Album cover"
-          className="w-full h-full object-cover"
-        />
-      </div>
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      {/* Card */}
+      <div
+        className="
+          relative
+          w-full h-screen
+          bg-black
+          sm:min-w-[450px] sm:h-[760px]
+          sm:border sm:border-gray-700 sm:rounded-2xl
+          overflow-hidden
+        "
+        style={{
+          backgroundImage: "url('/Start.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/40" />
 
-      {/* Card Content */}
-      <div className="p-4 flex flex-col justify-between h-1/2 sm:h-2/3 sm:p-2">
-        <div>
-          <h2 className="text-xl font-bold mb-2 sm:text-2xl">Song Title</h2>
-          <p className="text-gray-300 sm:text-lg">Artist Name</p>
-        </div>
-
-        <div className="mt-auto">
-          <button className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition sm:py-3">
-            Play
-          </button>
+        {/* Text Content */}
+        <div className="absolute left-6 bottom-[25%] z-10 max-w-[85%]">
+          <p className="text-white text-xl leading-snug">
+            If{" "}
+            <span className="text-green-500 font-semibold">"Leadership"</span>{" "}
+            was a <br />
+            playlist what would it <br />
+            sound like?
+          </p>
         </div>
       </div>
     </div>
