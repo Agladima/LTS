@@ -63,31 +63,31 @@ export default function WelcomePage() {
     },
     {
       id: 2,
-      src: "/lts24.JPG",
+      src: "/bee.jpeg",
       name: "Favour Bassey",
       title: "LCP 25.26",
     },
     {
       id: 3,
-      src: "/lts25.jpg",
+      src: "/okod.jpeg",
       name: "Okod-Asi Kadimo",
       title: "LCVP MX 25.26",
     },
     {
       id: 4,
-      src: "/frame1.jpg",
+      src: "/ekp.jpeg",
       name: "Ekpenyong-Awan Bassey",
       title: "LCVP ICX 26.27",
     },
     {
       id: 5,
-      src: "/frame2.png",
+      src: "/eun.jpeg",
       name: "Eunice Solomon",
       title: "Team Leader, MX 26.27",
     },
     {
       id: 6,
-      src: "/frame3.jpg",
+      src: "/pasc.jpeg",
       name: "Paschal Betiang",
       title: "Team Leader, MKT 26.27 ",
     },
@@ -300,7 +300,8 @@ export default function WelcomePage() {
 
         <section className="mt-7 w-full rounded-2xl bg-[#1DB954] px-4 py-6 text-center">
           <p className="text-base font-semibold leading-snug text-black sm:text-lg">
-            If <span className="font-bold">&quot;LEADERSHIP&quot;</span> was a Playlist,
+            If <span className="font-bold">&quot;LEADERSHIP&quot;</span> was a
+            Playlist,
           </p>
           <p className="text-base font-semibold leading-snug text-black sm:text-lg">
             what type of songs will be in it?
