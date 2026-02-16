@@ -57,7 +57,7 @@ export default function WelcomePage() {
   const popularArtists = [
     {
       id: 1,
-      src: "/lts23.jpg",
+      src: "/lcp.jpg",
       name: "Betiang Chris-Eugene",
       title: "LCP 26.27",
     },
