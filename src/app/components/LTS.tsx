@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const LTS = () => {
   const [isSecondScreen, setIsSecondScreen] = useState(false);
+  const router = useRouter();
 
   const handleFirstInteraction = () => {
     if (!isSecondScreen) {
@@ -78,6 +80,7 @@ const LTS = () => {
               </p>
               <button
                 type="button"
+                onClick={() => router.push("/welcome")}
                 className="mt-6 mx-auto block w-[80%] rounded-full bg-[#1DB954] px-7 py-2 text-sm font-semibold text-black transition hover:bg-[#1ED760]"
               >
                 Continue
