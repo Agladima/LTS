@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 const LTS = () => {
   const [isSecondScreen, setIsSecondScreen] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const router = useRouter();
 
   const handleFirstInteraction = () => {
@@ -13,8 +14,20 @@ const LTS = () => {
     }
   };
 
+  const goToWelcome = () => {
+    if (isNavigating) return;
+    setIsNavigating(true);
+    setTimeout(() => {
+      router.push("/welcome");
+    }, 220);
+  };
+
   return (
-    <div className="min-h-[100dvh] bg-black flex items-center justify-center p-4">
+    <div
+      className={`min-h-[100dvh] bg-black flex items-center justify-center p-4 transition-opacity duration-200 ${
+        isNavigating ? "opacity-0" : "opacity-100"
+      }`}
+    >
       {/* Card */}
       <div
         className="
@@ -80,7 +93,7 @@ const LTS = () => {
               </p>
               <button
                 type="button"
-                onClick={() => router.push("/welcome")}
+                onClick={goToWelcome}
                 className="mt-6 mx-auto block w-[80%] rounded-full bg-[#1DB954] px-7 py-2 text-sm font-semibold text-black transition hover:bg-[#1ED760]"
               >
                 Continue

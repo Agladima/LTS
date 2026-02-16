@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -13,6 +14,8 @@ const getGreeting = () => {
 
 export default function WelcomePage() {
   const greeting = getGreeting();
+  const router = useRouter();
+  const [isNavigating, setIsNavigating] = useState(false);
   const artistsScrollRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const dragStartXRef = useRef(0);
@@ -41,6 +44,14 @@ export default function WelcomePage() {
 
   const handleArtistsMouseUpOrLeave = () => {
     isDraggingRef.current = false;
+  };
+
+  const goToListeningProfile = () => {
+    if (isNavigating) return;
+    setIsNavigating(true);
+    setTimeout(() => {
+      router.push("/listening-profile");
+    }, 220);
   };
 
   const popularArtists = [
@@ -83,9 +94,15 @@ export default function WelcomePage() {
   ];
 
   return (
-    <main className="min-h-screen bg-black px-4 py-8 text-white sm:px-6 sm:py-12">
+    <main
+      className={`min-h-screen bg-black px-4 py-8 text-white transition-opacity duration-200 sm:px-6 sm:py-12 ${
+        isNavigating ? "opacity-0" : "opacity-100"
+      }`}
+    >
       <div className="mx-auto w-full max-w-[450px]">
-        <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">{greeting}</h1>
+        <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
+          {greeting}
+        </h1>
         <h2 className="mt-6 text-lg font-medium text-white/90 sm:text-xl">
           Upcoming releases
         </h2>
@@ -123,16 +140,19 @@ export default function WelcomePage() {
                   upcoming event
                 </p>
                 <p className="mt-1 text-sm font-semibold leading-snug text-white sm:text-base">
-                  LTS 2026: The Tines of
+                  LTS 2026: The Tunes of
                 </p>
                 <p className="text-sm font-semibold leading-snug text-white sm:text-base">
                   Leadership (Listening Party)
                 </p>
-                <p className="mt-1 text-xs text-white/80 sm:text-sm">AiCAL 26.27</p>
+                <p className="mt-1 text-xs text-white/80 sm:text-sm">
+                  AiCAL 26.27
+                </p>
               </div>
 
               <button
                 type="button"
+                onClick={goToListeningProfile}
                 className="mt-4 rounded-full bg-[#1DB954] px-4 py-2 text-xs font-semibold text-black transition hover:bg-[#1ED760] sm:mt-6 sm:text-sm"
               >
                 Join Listening Party
@@ -141,7 +161,7 @@ export default function WelcomePage() {
           </div>
         </section>
 
-        <section className="mt-5 flex items-center gap-3 rounded-2xl bg-[#121212] p-2.5 sm:p-3">
+        <section className="mt-5 flex items-center gap-3 rounded-2xl p-2.5 sm:p-3">
           <img
             src="/frame2.png"
             alt="Leadership 101 cover"
@@ -158,7 +178,9 @@ export default function WelcomePage() {
         </section>
 
         <section className="mt-6">
-          <h3 className="text-base font-semibold text-white sm:text-lg">Jump back in</h3>
+          <h3 className="text-base font-semibold text-white sm:text-lg">
+            Jump back in
+          </h3>
 
           <div className="mt-3 grid grid-cols-3 gap-2">
             <div>
@@ -227,16 +249,26 @@ export default function WelcomePage() {
         </section>
 
         <section className="mt-7">
-          <h3 className="text-base font-semibold text-white sm:text-lg">Made for you</h3>
+          <h3 className="text-base font-semibold text-white sm:text-lg">
+            Made for you
+          </h3>
 
           <div className="mt-3 grid grid-cols-2 gap-3">
             <div>
               <div
-                className="flex aspect-square items-center justify-center rounded-lg"
+                className="flex aspect-square cursor-pointer items-center justify-center rounded-lg"
                 style={{
                   background:
                     "linear-gradient(to bottom right, #0FDD6E 0%, #F6FF54 100%)",
                 }}
+                onClick={goToListeningProfile}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    goToListeningProfile();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
               >
                 <span className="text-3xl font-semibold leading-none text-white sm:text-4xl">
                   +
@@ -256,7 +288,9 @@ export default function WelcomePage() {
                 alt="Playlist cover"
                 className="aspect-square w-full rounded-lg object-cover"
               />
-              <p className="mt-2 text-xs font-bold text-white sm:text-sm">Playlist</p>
+              <p className="mt-2 text-xs font-bold text-white sm:text-sm">
+                Playlist
+              </p>
               <p className="text-xs font-normal text-white/85 sm:text-sm">
                 AIESEC Roll Calls
               </p>
@@ -264,8 +298,27 @@ export default function WelcomePage() {
           </div>
         </section>
 
+        <section className="mt-7 w-full rounded-2xl bg-[#1DB954] px-4 py-6 text-center">
+          <p className="text-base font-semibold leading-snug text-black sm:text-lg">
+            If <span className="font-bold">&quot;LEADERSHIP&quot;</span> was a Playlist,
+          </p>
+          <p className="text-base font-semibold leading-snug text-black sm:text-lg">
+            what type of songs will be in it?
+          </p>
+
+          <button
+            type="button"
+            onClick={goToListeningProfile}
+            className="mx-auto mt-4 block rounded-full bg-black px-6 py-2 text-sm font-semibold text-white"
+          >
+            Creat your listernes profile
+          </button>
+        </section>
+
         <section className="mt-8">
-          <h2 className="text-xl font-bold text-white sm:text-2xl">Popular Artist</h2>
+          <h2 className="text-xl font-bold text-white sm:text-2xl">
+            Popular Artist
+          </h2>
           <p className="mt-1 text-xs font-normal text-white/80 sm:text-sm">
             AIESECers you know
           </p>
@@ -351,13 +404,16 @@ export default function WelcomePage() {
                 <p className="text-sm font-semibold leading-snug text-white sm:text-base">
                   Leadership (Listening Party)
                 </p>
-                <p className="mt-1 text-xs text-white/80 sm:text-sm">AiCAL 26.27</p>
+                <p className="mt-1 text-xs text-white/80 sm:text-sm">
+                  AiCAL 26.27
+                </p>
               </div>
             </div>
           </div>
 
           <button
             type="button"
+            onClick={goToListeningProfile}
             className="absolute bottom-3 left-3 z-10 rounded-full bg-[#1DB954] px-8 py-2 text-xs font-semibold text-black transition hover:bg-[#1ED760] sm:text-sm"
           >
             Pre-Save
