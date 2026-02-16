@@ -83,17 +83,17 @@ export default function WelcomePage() {
   ];
 
   return (
-    <main className="min-h-screen bg-black px-6 py-12 text-white">
+    <main className="min-h-screen bg-black px-4 py-8 text-white sm:px-6 sm:py-12">
       <div className="mx-auto w-full max-w-[450px]">
-        <h1 className="text-4xl font-semibold leading-tight">{greeting}</h1>
-        <h2 className="mt-6 text-xl font-medium text-white/90">
+        <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">{greeting}</h1>
+        <h2 className="mt-6 text-lg font-medium text-white/90 sm:text-xl">
           Upcoming releases
         </h2>
 
-        <section className="mt-4 rounded-2xl bg-[#121212] p-3">
-          <div className="flex items-start gap-3">
+        <section className="mt-4 rounded-2xl bg-[#121212] p-2.5 sm:p-3">
+          <div className="flex items-start gap-2 sm:gap-3">
             <div
-              className="relative w-[40%] min-w-[120px] overflow-hidden rounded-xl"
+              className="relative w-[40%] min-w-[105px] overflow-hidden rounded-xl sm:min-w-[120px]"
               style={{
                 backgroundImage: "url('/frame1.jpg')",
                 backgroundSize: "cover",
@@ -104,13 +104,13 @@ export default function WelcomePage() {
               <img
                 src="/layer1.png"
                 alt="LTS logo"
-                className="absolute left-2 top-2 z-20 h-7 w-auto"
+                className="absolute left-2 top-2 z-20 h-6 w-auto sm:h-7"
               />
-              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-2 pt-20 text-center">
-                <p className="text-[10px] uppercase tracking-wide text-[#FF9724]">
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-2 pt-14 text-center sm:pt-20">
+                <p className="text-[9px] uppercase tracking-wide text-[#FF9724] sm:text-[10px]">
                   The Tunes Of
                 </p>
-                <p className="text-lg font-bold leading-none text-[#FF9724]">
+                <p className="text-base font-bold leading-none text-[#FF9724] sm:text-lg">
                   LEADERSHIP
                 </p>
               </div>
@@ -119,21 +119,21 @@ export default function WelcomePage() {
 
             <div className="flex w-[60%] flex-col justify-start py-0">
               <div>
-                <p className="text-[11px] uppercase tracking-wide text-white/70">
+                <p className="text-[10px] uppercase tracking-wide text-white/70 sm:text-[11px]">
                   upcoming event
                 </p>
-                <p className="mt-1 text-base font-semibold leading-snug text-white">
+                <p className="mt-1 text-sm font-semibold leading-snug text-white sm:text-base">
                   LTS 2026: The Tines of
                 </p>
-                <p className="text-base font-semibold leading-snug text-white">
+                <p className="text-sm font-semibold leading-snug text-white sm:text-base">
                   Leadership (Listening Party)
                 </p>
-                <p className="mt-1 text-sm text-white/80">AiCAL 26.27</p>
+                <p className="mt-1 text-xs text-white/80 sm:text-sm">AiCAL 26.27</p>
               </div>
 
               <button
                 type="button"
-                className="mt-6 rounded-full bg-[#1DB954] px-4 py-2 text-sm font-semibold text-black transition hover:bg-[#1ED760]"
+                className="mt-4 rounded-full bg-[#1DB954] px-4 py-2 text-xs font-semibold text-black transition hover:bg-[#1ED760] sm:mt-6 sm:text-sm"
               >
                 Join Listening Party
               </button>
@@ -141,24 +141,24 @@ export default function WelcomePage() {
           </div>
         </section>
 
-        <section className="mt-5 flex items-center gap-3 rounded-2xl bg-[#121212] p-3">
+        <section className="mt-5 flex items-center gap-3 rounded-2xl bg-[#121212] p-2.5 sm:p-3">
           <img
             src="/frame2.png"
             alt="Leadership 101 cover"
-            className="h-20 w-20 rounded-lg object-cover"
+            className="h-16 w-16 rounded-lg object-cover sm:h-20 sm:w-20"
           />
           <div>
             <p className="text-[10px] font-light tracking-wide text-white/55">
               #LTSCALABAR
             </p>
-            <p className="mt-1 text-xl font-bold leading-tight text-white">
+            <p className="mt-1 text-lg font-bold leading-tight text-white sm:text-xl">
               Leadership 101
             </p>
           </div>
         </section>
 
         <section className="mt-6">
-          <h3 className="text-lg font-semibold text-white">Jump back in</h3>
+          <h3 className="text-base font-semibold text-white sm:text-lg">Jump back in</h3>
 
           <div className="mt-3 grid grid-cols-3 gap-2">
             <div>
@@ -185,7 +185,7 @@ export default function WelcomePage() {
             <div>
               <div className="relative overflow-hidden rounded-lg">
                 <img
-                  src="/lts24.jpg"
+                  src="/lts24.JPG"
                   alt="Pictures from LTS 2024"
                   className="aspect-square w-full object-cover"
                 />
@@ -227,7 +227,7 @@ export default function WelcomePage() {
         </section>
 
         <section className="mt-7">
-          <h3 className="text-lg font-semibold text-white">Made for you</h3>
+          <h3 className="text-base font-semibold text-white sm:text-lg">Made for you</h3>
 
           <div className="mt-3 grid grid-cols-2 gap-3">
             <div>
@@ -238,14 +238,14 @@ export default function WelcomePage() {
                     "linear-gradient(to bottom right, #0FDD6E 0%, #F6FF54 100%)",
                 }}
               >
-                <span className="text-4xl font-semibold leading-none text-white">
+                <span className="text-3xl font-semibold leading-none text-white sm:text-4xl">
                   +
                 </span>
               </div>
-              <p className="mt-2 text-sm  leading-snug text-white">
+              <p className="mt-2 text-xs leading-snug text-white sm:text-sm">
                 Add your own songs to the
               </p>
-              <p className="text-sm  leading-snug text-white">
+              <p className="text-xs leading-snug text-white sm:text-sm">
                 Leadership Playlist
               </p>
             </div>
@@ -256,8 +256,8 @@ export default function WelcomePage() {
                 alt="Playlist cover"
                 className="aspect-square w-full rounded-lg object-cover"
               />
-              <p className="mt-2 text-sm font-bold text-white">Playlist</p>
-              <p className="text-sm font-normal text-white/85">
+              <p className="mt-2 text-xs font-bold text-white sm:text-sm">Playlist</p>
+              <p className="text-xs font-normal text-white/85 sm:text-sm">
                 AIESEC Roll Calls
               </p>
             </div>
@@ -265,8 +265,8 @@ export default function WelcomePage() {
         </section>
 
         <section className="mt-8">
-          <h2 className="text-2xl font-bold text-white">Popular Artist</h2>
-          <p className="mt-1 text-sm font-normal text-white/80">
+          <h2 className="text-xl font-bold text-white sm:text-2xl">Popular Artist</h2>
+          <p className="mt-1 text-xs font-normal text-white/80 sm:text-sm">
             AIESECers you know
           </p>
 
@@ -277,7 +277,7 @@ export default function WelcomePage() {
             onMouseMove={handleArtistsMouseMove}
             onMouseUp={handleArtistsMouseUpOrLeave}
             onMouseLeave={handleArtistsMouseUpOrLeave}
-            className="mt-4 cursor-grab overflow-x-auto pb-1 select-none active:cursor-grabbing [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            className="mt-4 cursor-grab touch-pan-x overflow-x-auto pb-1 select-none active:cursor-grabbing [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             style={{ WebkitOverflowScrolling: "touch" }}
           >
             <div className="flex gap-3 pr-2">
@@ -291,10 +291,10 @@ export default function WelcomePage() {
                     alt={`Artist placeholder ${artist.id}`}
                     className="aspect-square w-full rounded-full object-cover"
                   />
-                  <p className="mt-2 text-center text-sm font-bold text-white">
+                  <p className="mt-2 text-center text-xs font-bold leading-tight text-white sm:text-sm">
                     {artist.name}
                   </p>
-                  <p className="text-center text-xs text-white/75">
+                  <p className="text-center text-[11px] leading-tight text-white/75 sm:text-xs">
                     {artist.title}
                   </p>
                 </div>
@@ -304,7 +304,7 @@ export default function WelcomePage() {
         </section>
 
         <section
-          className="relative mt-8 h-[430px] w-full overflow-hidden rounded-2xl p-3"
+          className="relative mt-8 h-[390px] w-full overflow-hidden rounded-2xl p-2.5 sm:h-[430px] sm:p-3"
           style={{
             backgroundImage: "url('/frame4.png')",
             backgroundSize: "100% 100%",
@@ -314,10 +314,10 @@ export default function WelcomePage() {
         >
           <div className="absolute inset-0 bg-black/35" />
 
-          <div className="relative z-10 rounded-2xl bg-[#47464B] p-2.5">
-            <div className="flex items-start gap-3">
+          <div className="relative z-10 rounded-2xl bg-[#47464B] p-2 sm:p-2.5">
+            <div className="flex items-start gap-2 sm:gap-3">
               <div
-                className="relative w-[40%] min-w-[120px] overflow-hidden rounded-xl"
+                className="relative w-[40%] min-w-[105px] overflow-hidden rounded-xl sm:min-w-[120px]"
                 style={{
                   backgroundImage: "url('/frame1.jpg')",
                   backgroundSize: "cover",
@@ -328,13 +328,13 @@ export default function WelcomePage() {
                 <img
                   src="/layer1.png"
                   alt="LTS logo"
-                  className="absolute left-2 top-2 z-20 h-7 w-auto"
+                  className="absolute left-2 top-2 z-20 h-6 w-auto sm:h-7"
                 />
-                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-2 pt-20 text-center">
-                  <p className="text-[10px] uppercase tracking-wide text-[#FF9724]">
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-2 pt-14 text-center sm:pt-20">
+                  <p className="text-[9px] uppercase tracking-wide text-[#FF9724] sm:text-[10px]">
                     The Tunes Of
                   </p>
-                  <p className="text-lg font-bold leading-none text-[#FF9724]">
+                  <p className="text-base font-bold leading-none text-[#FF9724] sm:text-lg">
                     LEADERSHIP
                   </p>
                 </div>
@@ -342,23 +342,23 @@ export default function WelcomePage() {
               </div>
 
               <div className="flex w-[60%] flex-col justify-start py-0">
-                <p className="text-[11px] uppercase tracking-wide text-white/70">
+                <p className="text-[10px] uppercase tracking-wide text-white/70 sm:text-[11px]">
                   upcoming event
                 </p>
-                <p className="mt-1 text-base font-semibold leading-snug text-white">
+                <p className="mt-1 text-sm font-semibold leading-snug text-white sm:text-base">
                   LTS 2026: The Tines of
                 </p>
-                <p className="text-base font-semibold leading-snug text-white">
+                <p className="text-sm font-semibold leading-snug text-white sm:text-base">
                   Leadership (Listening Party)
                 </p>
-                <p className="mt-1 text-sm text-white/80">AiCAL 26.27</p>
+                <p className="mt-1 text-xs text-white/80 sm:text-sm">AiCAL 26.27</p>
               </div>
             </div>
           </div>
 
           <button
             type="button"
-            className="absolute bottom-3 left-3 z-10 rounded-full bg-[#1DB954] px-8 py-2 text-sm font-semibold text-black transition hover:bg-[#1ED760]"
+            className="absolute bottom-3 left-3 z-10 rounded-full bg-[#1DB954] px-8 py-2 text-xs font-semibold text-black transition hover:bg-[#1ED760] sm:text-sm"
           >
             Pre-Save
           </button>
