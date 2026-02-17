@@ -174,8 +174,8 @@ export default function ListeningProfileSection3Page() {
             <div className="h-px w-full bg-white/30" />
             <div className="mt-3 flex items-start justify-between gap-3">
               <p className="text-sm font-medium leading-snug text-white/85">
-                Share my registration data with LTS Calabar content providers for
-                marketing purposes.
+                Share my registration data with LTS Calabar content providers
+                for marketing purposes.
               </p>
               <label className="mt-0.5 flex items-center">
                 <input
@@ -188,7 +188,7 @@ export default function ListeningProfileSection3Page() {
             </div>
 
             <p className="mt-4 text-xs leading-snug text-white/75">
-              By tapping on “Create account”, you agree to the LTS Calabar Terms
+              By tapping on “Create Profile”, you agree to the LTS Calabar Terms
               of Use.
             </p>
             <p className="mt-3 text-xs leading-snug text-white/75">
