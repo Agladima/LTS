@@ -184,7 +184,7 @@ export default function WelcomePage() {
 
           <div className="mt-3 grid grid-cols-3 gap-2">
             <div>
-              <div className="relative overflow-hidden rounded-lg">
+              <div className="relative w-full overflow-hidden rounded-lg">
                 <img
                   src="/lts23.jpg"
                   alt="Pictures from LTS 2023"
@@ -205,7 +205,7 @@ export default function WelcomePage() {
             </div>
 
             <div>
-              <div className="relative overflow-hidden rounded-lg">
+              <div className="relative w-full overflow-hidden rounded-lg">
                 <img
                   src="/lts24.JPG"
                   alt="Pictures from LTS 2024"
@@ -226,7 +226,7 @@ export default function WelcomePage() {
             </div>
 
             <div>
-              <div className="relative overflow-hidden rounded-lg">
+              <div className="relative w-full overflow-hidden rounded-lg">
                 <img
                   src="/lts25.jpg"
                   alt="Pictures from LTS 2025"
@@ -254,7 +254,7 @@ export default function WelcomePage() {
           </h3>
 
           <div className="mt-3 grid grid-cols-2 gap-3">
-            <div>
+            <div className="mx-auto w-[85%]">
               <div
                 className="flex aspect-square cursor-pointer items-center justify-center rounded-lg"
                 style={{
@@ -282,7 +282,7 @@ export default function WelcomePage() {
               </p>
             </div>
 
-            <div>
+            <div className="mx-auto w-[85%]">
               <img
                 src="/frame3.jpg"
                 alt="Playlist cover"
@@ -298,7 +298,7 @@ export default function WelcomePage() {
           </div>
         </section>
 
-        <section className="mt-7 w-full rounded-2xl bg-[#1DB954] px-4 py-6 text-center">
+        <section className="mt-7 w-full rounded-2xl bg-[#1DB954] px-4 py-5 text-center">
           <p className="text-base font-semibold leading-snug text-black sm:text-lg">
             If <span className="font-bold">&quot;LEADERSHIP&quot;</span> was a
             Playlist,
@@ -310,7 +310,7 @@ export default function WelcomePage() {
           <button
             type="button"
             onClick={goToListeningProfile}
-            className="mx-auto mt-4 block rounded-full bg-black px-6 py-2 text-sm font-semibold text-white"
+            className="mx-auto mt-3 block rounded-full bg-black px-5 py-2 text-sm font-semibold text-white"
           >
             Creat your listernes profile
           </button>
@@ -338,7 +338,7 @@ export default function WelcomePage() {
               {popularArtists.map((artist) => (
                 <div
                   key={artist.id}
-                  className="w-[calc((100%-1.5rem)/3)] min-w-[calc((100%-1.5rem)/3)] flex-none"
+                  className="w-[calc((100%-1.5rem)/3.2)] min-w-[calc((100%-1.5rem)/3.2)] flex-none"
                 >
                   <img
                     src={artist.src}
@@ -358,7 +358,7 @@ export default function WelcomePage() {
         </section>
 
         <section
-          className="relative mt-8 h-[390px] w-full overflow-hidden rounded-2xl p-2.5 sm:h-[430px] sm:p-3"
+          className="relative mt-8 h-[360px] w-full overflow-hidden rounded-2xl p-2.5 sm:h-[400px] sm:p-3"
           style={{
             backgroundImage: "url('/frame4.png')",
             backgroundSize: "100% 100%",

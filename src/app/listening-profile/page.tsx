@@ -80,7 +80,7 @@ export default function ListeningProfilePage() {
   return (
     <main className="min-h-screen bg-black px-3 py-5 text-white sm:px-6 sm:py-10">
       <div
-        className="mx-auto w-full max-w-[450px] rounded-xl p-3.5 sm:rounded-2xl sm:p-5"
+        className="mx-auto w-full max-w-[450px] min-h-[calc(100dvh-9.5rem)] rounded-xl p-3.5 sm:min-h-[calc(100dvh-10.5rem)] sm:rounded-2xl sm:p-5"
         style={{
           background: "linear-gradient(to bottom, #1ED760 0%, #121212 53%)",
         }}
