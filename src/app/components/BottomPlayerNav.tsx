@@ -14,8 +14,10 @@ export default function BottomPlayerNav() {
   const isWelcomePage = pathname === "/welcome";
   const isUpgradePremiumPage = pathname.startsWith("/upgrade-premium");
   const isListeningProfilePage = pathname === "/listening-profile";
-  const isListeningProfileStep2Page = pathname === "/listening-profile/section-2";
-  const isListeningProfileStep3Page = pathname === "/listening-profile/section-3";
+  const isListeningProfileStep2Page =
+    pathname === "/listening-profile/section-2";
+  const isListeningProfileStep3Page =
+    pathname === "/listening-profile/section-3";
   const progressWidth =
     pathname === "/welcome"
       ? "8%"
@@ -25,7 +27,7 @@ export default function BottomPlayerNav() {
           ? "72%"
           : pathname === "/listening-profile/section-3"
             ? "100%"
-          : "45%";
+            : "45%";
 
   const handlePrimaryAction = () => {
     if (isListeningProfilePage) {
@@ -60,12 +62,17 @@ export default function BottomPlayerNav() {
 
   React.useEffect(() => {
     const updateFromBody = () => {
-      setIsProfileModalOpen(document.body.classList.contains("profile-modal-open"));
+      setIsProfileModalOpen(
+        document.body.classList.contains("profile-modal-open"),
+      );
     };
 
     updateFromBody();
     const observer = new MutationObserver(updateFromBody);
-    observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     return () => observer.disconnect();
   }, [pathname]);
@@ -92,7 +99,7 @@ export default function BottomPlayerNav() {
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[12px] text-white">
                   <span className="font-bold">
-                    Creating Listeners&apos;s Profile .{" "}
+                    Create Listener&apos;s Profile .{" "}
                   </span>
                   <span className="font-normal">AiCAL</span>
                 </p>
@@ -170,7 +177,11 @@ export default function BottomPlayerNav() {
             <span className="text-[11px]">Statistics</span>
           </button>
 
-          <button type="button" className="flex flex-col items-center gap-1">
+          <button
+            type="button"
+            onClick={() => router.push("/settings")}
+            className="flex flex-col items-center gap-1"
+          >
             <svg
               viewBox="0 0 24 24"
               className="h-6 w-6 fill-current"

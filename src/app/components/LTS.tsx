@@ -22,6 +22,11 @@ const LTS = () => {
     }, 220);
   };
 
+  const goToUpgradePremium = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    router.push("/upgrade-premium");
+  };
+
   return (
     <div
       className={`min-h-[100dvh] bg-black flex items-center justify-center p-4 transition-opacity duration-200 ${
@@ -110,7 +115,13 @@ const LTS = () => {
         >
           Already registered? Want to upgrade to premium
           <br />
-          <span className="text-[#1DB954]">Click here</span>
+          <button
+            type="button"
+            onClick={goToUpgradePremium}
+            className="text-[#1DB954]"
+          >
+            Click here
+          </button>
         </p>
       </div>
     </div>

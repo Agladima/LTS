@@ -312,7 +312,7 @@ export default function WelcomePage() {
             onClick={goToListeningProfile}
             className="mx-auto mt-3 block rounded-full bg-black px-5 py-2 text-sm font-semibold text-white"
           >
-            Creat your listernes profile
+            Create your listeners profile
           </button>
         </section>
 
@@ -400,7 +400,7 @@ export default function WelcomePage() {
                   upcoming event
                 </p>
                 <p className="mt-1 text-sm font-semibold leading-snug text-white sm:text-base">
-                  LTS 2026: The Tines of
+                  LTS 2026: The Tunes of
                 </p>
                 <p className="text-sm font-semibold leading-snug text-white sm:text-base">
                   Leadership (Listening Party)

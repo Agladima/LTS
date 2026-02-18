@@ -2,21 +2,21 @@
 
 import React from "react";
 import Image from "next/image";
-import { FaAngleDown } from "react-icons/fa6";
-import { FaAngleUp } from "react-icons/fa6";
 import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import GreenDropdown from "@/app/components/GreenDropdown";
 
 export default function ListeningProfileSection3Page() {
   const router = useRouter();
-  const [activeSelect, setActiveSelect] = React.useState<string | null>(null);
+  const [studioOppositeSex, setStudioOppositeSex] = React.useState("");
   const [showProfileCard, setShowProfileCard] = React.useState(false);
   const [profileCardBg, setProfileCardBg] = React.useState("#FFCDD2");
   const [isDownloading, setIsDownloading] = React.useState(false);
 
   const handleOpenProfileCard = () => {
     const cardColors = ["#FFCDD2", "#8A38F5", "#FBE72E"];
-    const randomColor = cardColors[Math.floor(Math.random() * cardColors.length)];
+    const randomColor =
+      cardColors[Math.floor(Math.random() * cardColors.length)];
     setProfileCardBg(randomColor);
     setShowProfileCard(true);
   };
@@ -36,7 +36,7 @@ export default function ListeningProfileSection3Page() {
     x: number,
     y: number,
     maxWidth: number,
-    lineHeight: number
+    lineHeight: number,
   ) => {
     const words = text.split(" ");
     let line = "";
@@ -104,13 +104,19 @@ export default function ListeningProfileSection3Page() {
         cardPadding,
         236,
         width - cardPadding * 2,
-        42
+        42,
       );
 
       // Main image
       const imageTop = textEndY + 34;
       const imageHeight = 380;
-      ctx.drawImage(mainImg, cardPadding, imageTop, width - cardPadding * 2, imageHeight);
+      ctx.drawImage(
+        mainImg,
+        cardPadding,
+        imageTop,
+        width - cardPadding * 2,
+        imageHeight,
+      );
 
       // Details
       const detailsY = imageTop + imageHeight + 56;
@@ -138,7 +144,11 @@ export default function ListeningProfileSection3Page() {
 
       ctx.fillStyle = "#000000";
       ctx.font = "400 25px Arial";
-      ctx.fillText("Pay confirmation fee to upgrade", cardPadding, buttonY + 112);
+      ctx.fillText(
+        "Pay confirmation fee to upgrade",
+        cardPadding,
+        buttonY + 112,
+      );
       ctx.fillText("to premium", cardPadding, buttonY + 146);
 
       const downloadLink = document.createElement("a");
@@ -217,39 +227,19 @@ export default function ListeningProfileSection3Page() {
               htmlFor="studioOppositeSex"
               className="mb-1 block text-xl font-semibold text-white/90"
             >
-              Would you like studio with opposite sex?
+              Would you like a studio with opposite sex?
             </label>
-            <div className="relative">
-              <select
-                id="studioOppositeSex"
-                name="studioOppositeSex"
-                defaultValue=""
-                onFocus={() => setActiveSelect("studioOppositeSex")}
-                onBlur={() => setActiveSelect(null)}
-                className="w-full appearance-none rounded-md border border-white/30 bg-white/10 px-4 py-4 pr-11 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
-              >
-                <option value="" disabled>
-                  Select an option
-                </option>
-                <option className="bg-black text-white" value="yes">
-                  Yes
-                </option>
-                <option className="bg-black text-white" value="no">
-                  N0
-                </option>
-              </select>
-              {activeSelect === "studioOppositeSex" ? (
-                <FaAngleUp
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              ) : (
-                <FaAngleDown
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              )}
-            </div>
+            <GreenDropdown
+              id="studioOppositeSex"
+              name="studioOppositeSex"
+              value={studioOppositeSex}
+              placeholder="Select an option"
+              onChange={setStudioOppositeSex}
+              options={[
+                { value: "yes", label: "Yes" },
+                { value: "no", label: "No" },
+              ]}
+            />
             <p className="mt-1 text-xs font-semibold text-white/75">
               Would you stay in the same room with gender of opposite sex?
             </p>
@@ -317,7 +307,7 @@ export default function ListeningProfileSection3Page() {
               htmlFor="suggestions"
               className="mb-1 block text-xl font-semibold text-white/90"
             >
-              got any suggestions
+              Got any suggestions
             </label>
             <input
               id="suggestions"
@@ -376,7 +366,10 @@ export default function ListeningProfileSection3Page() {
           className="fixed inset-0 z-20 flex items-center justify-center bg-black/60 px-4"
           onClick={() => setShowProfileCard(false)}
         >
-          <div className="w-full max-w-[330px] space-y-3" onClick={(event) => event.stopPropagation()}>
+          <div
+            className="w-full max-w-[330px] space-y-3"
+            onClick={(event) => event.stopPropagation()}
+          >
             <div
               className="p-3.5 text-black sm:p-4"
               style={{ backgroundColor: profileCardBg }}
@@ -401,8 +394,9 @@ export default function ListeningProfileSection3Page() {
                 <span className="font-bold">&quot;Leadership&quot;</span>{" "}
                 listening party on{" "}
                 <span className="font-bold">&quot;Free trial&quot;</span>{" "}
-                upgrade to <span className="font-bold">&quot;Premium&quot;</span>{" "}
-                for unlimited access
+                upgrade to{" "}
+                <span className="font-bold">&quot;Premium&quot;</span> for
+                unlimited access
               </p>
 
               <div className="mt-4 h-32 w-full overflow-hidden">

@@ -1,14 +1,12 @@
 "use client";
 
 import React from "react";
-import { FaAngleDown } from "react-icons/fa6";
-import { FaAngleUp } from "react-icons/fa6";
 import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import GreenDropdown from "@/app/components/GreenDropdown";
 
 export default function UpgradeToPremiumPage() {
   const router = useRouter();
-  const [activeSelect, setActiveSelect] = React.useState<string | null>(null);
   const [fullName, setFullName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
@@ -69,13 +67,13 @@ export default function UpgradeToPremiumPage() {
               htmlFor="fullName"
               className="mb-1 block text-xl font-semibold text-white/90"
             >
-              what should we call you?
+              What should we call you?
             </label>
             <input
               id="fullName"
               name="fullName"
               type="text"
-              placeholder="Full name"
+              placeholder="Full Name"
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-4 py-4 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
@@ -111,7 +109,7 @@ export default function UpgradeToPremiumPage() {
               htmlFor="phone"
               className="mb-1 block text-xl font-semibold text-white/90"
             >
-              what&apos;s your phone number?
+              What&apos;s your phone number?
             </label>
             <input
               id="phone"
@@ -134,41 +132,18 @@ export default function UpgradeToPremiumPage() {
             >
               Old or New user?
             </label>
-            <div className="relative">
-              <select
-                id="userType"
-                name="userType"
-                value={userType}
-                onChange={(event) => setUserType(event.target.value)}
-                onFocus={() => setActiveSelect("userType")}
-                onBlur={() => setActiveSelect(null)}
-                className="w-full appearance-none rounded-md border border-white/30 bg-white/10 px-4 py-4 pr-11 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
-              >
-                <option value="" disabled>
-                  select option
-                </option>
-                <option className="bg-black text-white" value="new_member">
-                  New Member
-                </option>
-                <option className="bg-black text-white" value="old_member">
-                  Old Member
-                </option>
-                <option className="bg-black text-white" value="alumnus">
-                  Alumnus
-                </option>
-              </select>
-              {activeSelect === "userType" ? (
-                <FaAngleUp
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              ) : (
-                <FaAngleDown
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              )}
-            </div>
+            <GreenDropdown
+              id="userType"
+              name="userType"
+              value={userType}
+              placeholder="Select option"
+              onChange={setUserType}
+              options={[
+                { value: "new_member", label: "New Member" },
+                { value: "old_member", label: "Old Member" },
+                { value: "alumnus", label: "Alumnus" },
+              ]}
+            />
             <p className="mt-1 text-xs font-semibold text-white/75">
               Are you an old or new member
             </p>
@@ -181,41 +156,21 @@ export default function UpgradeToPremiumPage() {
             >
               Select a Premium plan
             </label>
-            <div className="relative">
-              <select
-                id="premiumPlan"
-                name="premiumPlan"
-                value={premiumPlan}
-                onChange={(event) => setPremiumPlan(event.target.value)}
-                onFocus={() => setActiveSelect("premiumPlan")}
-                onBlur={() => setActiveSelect(null)}
-                className="w-full appearance-none rounded-md border border-white/30 bg-white/10 px-4 py-4 pr-11 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
-              >
-                <option value="" disabled>
-                  select an option
-                </option>
-                <option className="bg-black text-white" value="virtual_plan">
-                  Virtual Plan(15,000 NGN)
-                </option>
-                <option className="bg-black text-white" value="day_pass_plan">
-                  Day Pass Plan(18,000 NGN)
-                </option>
-                <option className="bg-black text-white" value="full_hotel_stay">
-                  Full Hotel Stay (20,000 NGN)
-                </option>
-              </select>
-              {activeSelect === "premiumPlan" ? (
-                <FaAngleUp
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              ) : (
-                <FaAngleDown
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              )}
-            </div>
+            <GreenDropdown
+              id="premiumPlan"
+              name="premiumPlan"
+              value={premiumPlan}
+              placeholder="Select an option"
+              onChange={setPremiumPlan}
+              options={[
+                { value: "virtual_plan", label: "Virtual Plan(15,000 NGN)" },
+                { value: "day_pass_plan", label: "Day Pass Plan(18,000 NGN)" },
+                {
+                  value: "full_hotel_stay",
+                  label: "Full Hotel Stay (20,000 NGN)",
+                },
+              ]}
+            />
             <p className="mt-1 text-xs font-semibold text-white/75">
               Choose your preferred attendance
             </p>

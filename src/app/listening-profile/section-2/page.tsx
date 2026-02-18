@@ -1,14 +1,16 @@
 "use client";
 
 import React from "react";
-import { FaAngleDown } from "react-icons/fa6";
-import { FaAngleUp } from "react-icons/fa6";
 import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import GreenDropdown from "@/app/components/GreenDropdown";
 
 export default function ListeningProfileSection2Page() {
   const router = useRouter();
-  const [activeSelect, setActiveSelect] = React.useState<string | null>(null);
+  const [userType, setUserType] = React.useState("");
+  const [status, setStatus] = React.useState("");
+  const [genre, setGenre] = React.useState("");
+  const [firstParty, setFirstParty] = React.useState("");
 
   return (
     <main className="min-h-screen bg-black px-3 py-5 text-white sm:px-6 sm:py-10">
@@ -37,42 +39,20 @@ export default function ListeningProfileSection2Page() {
               htmlFor="userType"
               className="mb-1 block text-xl font-semibold text-white/90"
             >
-              Old or new user?
+              Old or New user?
             </label>
-            <div className="relative">
-              <select
-                id="userType"
-                name="userType"
-                defaultValue=""
-                onFocus={() => setActiveSelect("userType")}
-                onBlur={() => setActiveSelect(null)}
-                className="w-full appearance-none rounded-md border border-white/30 bg-white/10 px-4 py-4 pr-11 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
-              >
-                <option value="" disabled>
-                  Select option
-                </option>
-                <option className="bg-black text-white" value="new-member">
-                  New member
-                </option>
-                <option className="bg-black text-white" value="old-member">
-                  Old member
-                </option>
-                <option className="bg-black text-white" value="alumnus">
-                  Alumnus
-                </option>
-              </select>
-              {activeSelect === "userType" ? (
-                <FaAngleUp
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              ) : (
-                <FaAngleDown
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              )}
-            </div>
+            <GreenDropdown
+              id="userType"
+              name="userType"
+              value={userType}
+              placeholder="Select option"
+              onChange={setUserType}
+              options={[
+                { value: "new-member", label: "New member" },
+                { value: "old-member", label: "Old member" },
+                { value: "alumnus", label: "Alumnus" },
+              ]}
+            />
             <p className="mt-1 text-xs font-semibold text-white/75">
               Are you a new or old member?
             </p>
@@ -83,45 +63,24 @@ export default function ListeningProfileSection2Page() {
               htmlFor="status"
               className="mb-1 block text-xl font-semibold text-white/90"
             >
-              What's your status?
+              What&apos;s your status?
             </label>
-            <div className="relative">
-              <select
-                id="status"
-                name="status"
-                defaultValue=""
-                onFocus={() => setActiveSelect("status")}
-                onBlur={() => setActiveSelect(null)}
-                className="w-full appearance-none rounded-md border border-white/30 bg-white/10 px-4 py-4 pr-11 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
-              >
-                <option value="" disabled>
-                  Select option
-                </option>
-                <option className="bg-black text-white" value="tm">
-                  Team Member - TM
-                </option>
-                <option className="bg-black text-white" value="tl">
-                  Team Leader -tl
-                </option>
-                <option className="bg-black text-white" value="lcvp">
-                  Local Committee Vice President - LCVP
-                </option>
-                <option className="bg-black text-white" value="lcp">
-                  Local Committee President - LCP
-                </option>
-              </select>
-              {activeSelect === "status" ? (
-                <FaAngleUp
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              ) : (
-                <FaAngleDown
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              )}
-            </div>
+            <GreenDropdown
+              id="status"
+              name="status"
+              value={status}
+              placeholder="Select option"
+              onChange={setStatus}
+              options={[
+                { value: "tm", label: "Team Member - TM" },
+                { value: "tl", label: "Team Leader -TL" },
+                {
+                  value: "lcvp",
+                  label: "Local Committee Vice President - LCVP",
+                },
+                { value: "lcp", label: "Local Committee President - LCP" },
+              ]}
+            />
             <p className="mt-1 text-xs font-semibold text-white/75">
               Please select your role
             </p>
@@ -132,54 +91,25 @@ export default function ListeningProfileSection2Page() {
               htmlFor="genre"
               className="mb-1 block text-xl font-semibold text-white/90"
             >
-              Pick your genre
+              Pick your Genre
             </label>
-            <div className="relative">
-              <select
-                id="genre"
-                name="genre"
-                defaultValue=""
-                onFocus={() => setActiveSelect("genre")}
-                onBlur={() => setActiveSelect(null)}
-                className="w-full appearance-none rounded-md border border-white/30 bg-white/10 px-4 py-4 pr-11 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
-              >
-                <option value="" disabled>
-                  select option
-                </option>
-                <option className="bg-black text-white" value="bd-ewa">
-                  BD/EWA
-                </option>
-                <option className="bg-black text-white" value="fl">
-                  F&amp;L
-                </option>
-                <option className="bg-black text-white" value="icx">
-                  iCX
-                </option>
-                <option className="bg-black text-white" value="mx">
-                  MX
-                </option>
-                <option className="bg-black text-white" value="ogt">
-                  oGT
-                </option>
-                <option className="bg-black text-white" value="ogv">
-                  oGV
-                </option>
-                <option className="bg-black text-white" value="eb">
-                  EB
-                </option>
-              </select>
-              {activeSelect === "genre" ? (
-                <FaAngleUp
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              ) : (
-                <FaAngleDown
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              )}
-            </div>
+            <GreenDropdown
+              id="genre"
+              name="genre"
+              value={genre}
+              placeholder="Select option"
+              onChange={setGenre}
+              options={[
+                { value: "bd-ewa", label: "BD/EWA" },
+                { value: "fl", label: "F&L" },
+                { value: "icx", label: "iCX" },
+                { value: "mx", label: "MX" },
+                { value: "ogt", label: "oGT" },
+                { value: "ogv", label: "oGV" },
+                { value: "mkt", label: "MKT" },
+                { value: "eb", label: "EB" },
+              ]}
+            />
             <p className="mt-1 text-xs font-semibold text-white/75">
               Please select your functional area(FA)
             </p>
@@ -192,37 +122,17 @@ export default function ListeningProfileSection2Page() {
             >
               Is this your first listening party?
             </label>
-            <div className="relative">
-              <select
-                id="firstParty"
-                name="firstParty"
-                defaultValue=""
-                onFocus={() => setActiveSelect("firstParty")}
-                onBlur={() => setActiveSelect(null)}
-                className="w-full appearance-none rounded-md border border-white/30 bg-white/10 px-4 py-4 pr-11 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
-              >
-                <option value="" disabled>
-                  select option
-                </option>
-                <option className="bg-black text-white" value="yes">
-                  Yes
-                </option>
-                <option className="bg-black text-white" value="no">
-                  No
-                </option>
-              </select>
-              {activeSelect === "firstParty" ? (
-                <FaAngleUp
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              ) : (
-                <FaAngleDown
-                  className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-base text-white/70"
-                  aria-hidden="true"
-                />
-              )}
-            </div>
+            <GreenDropdown
+              id="firstParty"
+              name="firstParty"
+              value={firstParty}
+              placeholder="Select option"
+              onChange={setFirstParty}
+              options={[
+                { value: "yes", label: "Yes" },
+                { value: "no", label: "No" },
+              ]}
+            />
             <p className="mt-1 text-xs font-semibold text-white/75">
               Is this your first AIESEC conference?
             </p>
@@ -233,13 +143,13 @@ export default function ListeningProfileSection2Page() {
               htmlFor="expectations"
               className="mb-1 block text-xl font-semibold text-white/90"
             >
-              wWat are your expectations?
+              What are your expectations?
             </label>
             <input
               id="expectations"
               name="expectations"
               type="text"
-              placeholder="type an answer"
+              placeholder="Type an answer"
               className="w-full rounded-md border border-white/30 bg-white/10 px-4 py-4 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
             <p className="mt-1 text-xs font-semibold text-white/75">

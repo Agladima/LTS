@@ -4,6 +4,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { IoCameraOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import GreenDropdown from "@/app/components/GreenDropdown";
 
 const WEEK_DAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const MONTH_NAMES = [
@@ -37,6 +38,7 @@ const formatDisplayDate = (isoDate: string) => {
 export default function ListeningProfilePage() {
   const router = useRouter();
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [calendarMonth, setCalendarMonth] = useState(() => {
@@ -107,9 +109,15 @@ export default function ListeningProfilePage() {
             className="flex h-full w-full flex-col items-center justify-center text-center"
           >
             <IoCameraOutline className="mx-auto mb-3 h-12 w-12 text-[#B3B3B3] sm:mb-4 sm:h-14 sm:w-14" />
-            <p className="text-sm font-semibold leading-tight text-[#B3B3B3] sm:text-base">Upload your</p>
-            <p className="text-sm font-semibold leading-tight text-[#B3B3B3] sm:text-base">Album Art/Profile</p>
-            <p className="text-sm font-semibold leading-tight text-[#B3B3B3] sm:text-base">Picture</p>
+            <p className="text-sm font-semibold leading-tight text-[#B3B3B3] sm:text-base">
+              Upload your
+            </p>
+            <p className="text-sm font-semibold leading-tight text-[#B3B3B3] sm:text-base">
+              Album Art/Profile
+            </p>
+            <p className="text-sm font-semibold leading-tight text-[#B3B3B3] sm:text-base">
+              Picture
+            </p>
           </button>
           <input
             ref={imageInputRef}
@@ -122,14 +130,17 @@ export default function ListeningProfilePage() {
 
         <form className="mt-5 space-y-4 sm:mt-6">
           <div>
-            <label htmlFor="fullName" className="mb-1 block text-sm text-white/85">
+            <label
+              htmlFor="fullName"
+              className="mb-1 block text-sm text-white/85"
+            >
               What should we call you?
             </label>
             <input
               id="fullName"
               name="fullName"
               type="text"
-              placeholder="Full nmae"
+              placeholder="Full Name"
               className="w-full rounded-md border border-white/30 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
           </div>
@@ -149,7 +160,7 @@ export default function ListeningProfilePage() {
 
           <div>
             <label htmlFor="phone" className="mb-1 block text-sm text-white/85">
-              Whats your phone number?
+              What&apos;s your phone number?
             </label>
             <input
               id="phone"
@@ -161,26 +172,28 @@ export default function ListeningProfilePage() {
           </div>
 
           <div>
-            <label htmlFor="gender" className="mb-1 block text-sm text-white/85">
-              Whats your gender
+            <label
+              htmlFor="gender"
+              className="mb-1 block text-sm text-white/85"
+            >
+              What&apos;s your gender?
             </label>
-            <select
+            <GreenDropdown
               id="gender"
               name="gender"
-              defaultValue=""
-              className="w-full rounded-md border border-white/30 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
-            >
-              <option value="" disabled>
-                Select gender
-              </option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
+              value={gender}
+              placeholder="Select gender"
+              onChange={setGender}
+              options={[
+                { value: "male", label: "Male" },
+                { value: "female", label: "Female" },
+              ]}
+            />
           </div>
 
           <div>
             <label htmlFor="dob" className="mb-1 block text-sm text-white/85">
-              Whats your date of birth?
+              What&apos;s your date of birth?
             </label>
             <input type="hidden" id="dob" name="dob" value={dob} />
             <div className="relative">
@@ -202,7 +215,12 @@ export default function ListeningProfilePage() {
                       type="button"
                       onClick={() =>
                         setCalendarMonth(
-                          (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1),
+                          (prev) =>
+                            new Date(
+                              prev.getFullYear(),
+                              prev.getMonth() - 1,
+                              1,
+                            ),
                         )
                       }
                       className="rounded bg-white/10 px-2 py-1 text-[11px] text-white hover:bg-white/20"
@@ -210,13 +228,19 @@ export default function ListeningProfilePage() {
                       Prev
                     </button>
                     <p className="text-xs font-semibold text-[#1ED760] sm:text-sm">
-                      {MONTH_NAMES[calendarMonth.getMonth()]} {calendarMonth.getFullYear()}
+                      {MONTH_NAMES[calendarMonth.getMonth()]}{" "}
+                      {calendarMonth.getFullYear()}
                     </p>
                     <button
                       type="button"
                       onClick={() =>
                         setCalendarMonth(
-                          (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1),
+                          (prev) =>
+                            new Date(
+                              prev.getFullYear(),
+                              prev.getMonth() + 1,
+                              1,
+                            ),
                         )
                       }
                       className="rounded bg-white/10 px-2 py-1 text-[11px] text-white hover:bg-white/20"
