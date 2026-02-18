@@ -7,7 +7,7 @@ import { IoMdArrowBack } from "react-icons/io";
 import { RxPerson } from "react-icons/rx";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function UpgradePremiumPaymentPage() {
+function UpgradePremiumPaymentContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedMethod, setSelectedMethod] = React.useState("");
@@ -122,5 +122,13 @@ export default function UpgradePremiumPaymentPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function UpgradePremiumPaymentPage() {
+  return (
+    <React.Suspense fallback={null}>
+      <UpgradePremiumPaymentContent />
+    </React.Suspense>
   );
 }
