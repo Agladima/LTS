@@ -10,6 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 export default function BottomPlayerNav() {
   const router = useRouter();
   const pathname = usePathname();
+  const [isProfileModalOpen, setIsProfileModalOpen] = React.useState(false);
   const isWelcomePage = pathname === "/welcome";
   const isListeningProfilePage = pathname === "/listening-profile";
   const isListeningProfileStep2Page = pathname === "/listening-profile/section-2";
@@ -56,76 +57,90 @@ export default function BottomPlayerNav() {
     router.back();
   };
 
+  React.useEffect(() => {
+    const updateFromBody = () => {
+      setIsProfileModalOpen(document.body.classList.contains("profile-modal-open"));
+    };
+
+    updateFromBody();
+    const observer = new MutationObserver(updateFromBody);
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+
+    return () => observer.disconnect();
+  }, [pathname]);
+
   // Keep landing screen clean; show on all subsequent pages.
   if (pathname === "/") return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/95 px-4 pb-5 pt-3 backdrop-blur-sm">
       <div className="mx-auto w-full max-w-[450px]">
-        <div className="mb-3 rounded-xl bg-[#121212] px-3 py-2">
-          <div className="mb-2 flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15">
-              <svg
-                viewBox="0 0 24 24"
-                className="h-5 w-5 fill-white"
-                aria-hidden="true"
-              >
-                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.32 0-6 2.24-6 5v1h12v-1c0-2.76-2.68-5-6-5Z" />
-              </svg>
-            </div>
-
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-[12px] text-white">
-                <span className="font-bold">
-                  Creating Listeners&apos;s Profile .{" "}
-                </span>
-                <span className="font-normal">AiCAL</span>
-              </p>
-              <p className="mt-0.5 flex items-center gap-1 text-[11px] text-[#1DB954]">
-                <IoMdBluetooth className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>LTSCalabar</span>
-              </p>
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              {isListeningProfileStep2Page || isListeningProfileStep3Page ? (
-                <button
-                  type="button"
-                  onClick={handlePreviousAction}
-                  className="rounded-full p-1.5 text-white/90 transition hover:bg-white/10"
-                  aria-label="Go to previous page"
+        {!isProfileModalOpen ? (
+          <div className="mb-3 rounded-xl bg-[#121212] px-3 py-2">
+            <div className="mb-2 flex items-center gap-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-5 w-5 fill-white"
+                  aria-hidden="true"
                 >
-                  <GiPreviousButton className="h-5 w-5" aria-hidden="true" />
-                </button>
-              ) : null}
+                  <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.32 0-6 2.24-6 5v1h12v-1c0-2.76-2.68-5-6-5Z" />
+                </svg>
+              </div>
 
-              {!isListeningProfileStep3Page ? (
-                <button
-                  type="button"
-                  onClick={handlePrimaryAction}
-                  className={`rounded-full p-1.5 transition ${
-                    isWelcomePage
-                      ? "bg-[#1DB954] text-black hover:bg-[#1ED760]"
-                      : "text-white/90 hover:bg-white/10"
-                  }`}
-                  aria-label="Go to listening profile form"
-                >
-                  {isWelcomePage ? (
-                    <IoPlay className="h-5 w-5" aria-hidden="true" />
-                  ) : (
-                    <GiNextButton className="h-5 w-5" aria-hidden="true" />
-                  )}
-                </button>
-              ) : null}
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[12px] text-white">
+                  <span className="font-bold">
+                    Creating Listeners&apos;s Profile .{" "}
+                  </span>
+                  <span className="font-normal">AiCAL</span>
+                </p>
+                <p className="mt-0.5 flex items-center gap-1 text-[11px] text-[#1DB954]">
+                  <IoMdBluetooth className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>LTSCalabar</span>
+                </p>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                {isListeningProfileStep2Page || isListeningProfileStep3Page ? (
+                  <button
+                    type="button"
+                    onClick={handlePreviousAction}
+                    className="rounded-full p-1.5 text-white/90 transition hover:bg-white/10"
+                    aria-label="Go to previous page"
+                  >
+                    <GiPreviousButton className="h-5 w-5" aria-hidden="true" />
+                  </button>
+                ) : null}
+
+                {!isListeningProfileStep3Page ? (
+                  <button
+                    type="button"
+                    onClick={handlePrimaryAction}
+                    className={`rounded-full p-1.5 transition ${
+                      isWelcomePage
+                        ? "bg-[#1DB954] text-black hover:bg-[#1ED760]"
+                        : "text-white/90 hover:bg-white/10"
+                    }`}
+                    aria-label="Go to listening profile form"
+                  >
+                    {isWelcomePage ? (
+                      <IoPlay className="h-5 w-5" aria-hidden="true" />
+                    ) : (
+                      <GiNextButton className="h-5 w-5" aria-hidden="true" />
+                    )}
+                  </button>
+                ) : null}
+              </div>
+            </div>
+            <div className="h-1.5 w-full rounded-full bg-[#1DB954]">
+              <div
+                className="h-1.5 rounded-full bg-white transition-all duration-500 ease-out"
+                style={{ width: progressWidth }}
+              />
             </div>
           </div>
-          <div className="h-1.5 w-full rounded-full bg-[#1DB954]">
-            <div
-              className="h-1.5 rounded-full bg-white transition-all duration-500 ease-out"
-              style={{ width: progressWidth }}
-            />
-          </div>
-        </div>
+        ) : null}
 
         <nav className="grid grid-cols-3 items-center text-white/85">
           <button
