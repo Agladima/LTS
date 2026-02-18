@@ -339,12 +339,15 @@ export default function ListeningProfileSection3Page() {
                 for marketing purposes.
               </p>
               <label className="mt-0.5 flex items-center">
-                <input
-                  type="radio"
-                  name="marketingConsent"
-                  value="yes"
-                  className="h-5 w-5 appearance-none rounded-full border border-[#777777] bg-black checked:border-[#1DB954] checked:bg-[#1DB954]"
-                />
+                <span className="relative h-5 w-5 rounded-full border-2 border-[#777777] p-[2px]">
+                  <input
+                    type="radio"
+                    name="marketingConsent"
+                    value="yes"
+                    className="peer absolute inset-0 z-10 m-0 h-full w-full cursor-pointer opacity-0"
+                  />
+                  <span className="pointer-events-none block h-full w-full rounded-full border border-black bg-black peer-checked:bg-[#777777]" />
+                </span>
               </label>
             </div>
 
@@ -457,6 +460,7 @@ export default function ListeningProfileSection3Page() {
             </button>
             <button
               type="button"
+              onClick={() => router.push("/upgrade-premium")}
               className="w-full rounded-full bg-[#DADADA] px-5 py-2.5 text-sm font-semibold text-black"
             >
               Upgrade to premium

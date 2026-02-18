@@ -12,6 +12,7 @@ export default function BottomPlayerNav() {
   const pathname = usePathname();
   const [isProfileModalOpen, setIsProfileModalOpen] = React.useState(false);
   const isWelcomePage = pathname === "/welcome";
+  const isUpgradePremiumPage = pathname.startsWith("/upgrade-premium");
   const isListeningProfilePage = pathname === "/listening-profile";
   const isListeningProfileStep2Page = pathname === "/listening-profile/section-2";
   const isListeningProfileStep3Page = pathname === "/listening-profile/section-3";
@@ -75,7 +76,7 @@ export default function BottomPlayerNav() {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-black/95 px-4 pb-5 pt-3 backdrop-blur-sm">
       <div className="mx-auto w-full max-w-[450px]">
-        {!isProfileModalOpen ? (
+        {!isProfileModalOpen && !isUpgradePremiumPage ? (
           <div className="mb-3 rounded-xl bg-[#121212] px-3 py-2">
             <div className="mb-2 flex items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15">
