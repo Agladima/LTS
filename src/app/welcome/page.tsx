@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { IoMdArrowBack } from "react-icons/io";
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -16,6 +17,7 @@ export default function WelcomePage() {
   const greeting = getGreeting();
   const router = useRouter();
   const [isNavigating, setIsNavigating] = useState(false);
+  const [activeArtistId, setActiveArtistId] = useState<number | null>(null);
   const artistsScrollRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const dragStartXRef = useRef(0);
@@ -70,20 +72,42 @@ export default function WelcomePage() {
     {
       id: 3,
       src: "/okod.jpeg",
-      name: "Okod-Asi Kadimo",
+      name: "Okod-Asi Oqua",
       title: "LCVP MX 25.26",
+      story: [
+        "My LTS story began with uncertainty, it was the first time sharing a room with the opposite sex and it was new and I was skeptical at first. But I quickly realized that AIESECers are different: kind, respectful, and driven.",
+        'Then I heard the words, "Don\'t just pass through AIESEC, let AIESEC pass through you." And something shifted in me. I decided I wouldn\'t leave AIESEC the same way I came.',
+        "LTS was fun, intense, and unforgettable from powerful sessions to tribe wars no one wanted to lose. I made friends who are still in my corner today. I honestly wished the three days didn't come to an end, it was one of the best experiences I've had as a youth.",
+        "That was where I found my purpose. LTS opened my eyes to the real meaning of AIESEC and became the foundation of my journey.",
+        "If there's one thing I'll say; don't miss LTS. It's where your real story begins.",
+      ],
     },
     {
       id: 4,
       src: "/ekp.jpeg",
       name: "Ekpenyong-Awan Bassey",
       title: "LCVP ICX 26.27",
+      story: [
+        "LTS was where AIESEC became real for me. From sharing rooms and late-night conversations with my roommates to the thrill of waking up early excited for each session, connection slowly became natural.",
+        "Through learning, laughing, and growing together, I saw AIESEC as a global movement with purpose. I learned that leadership isn't about titles and that my youth is an advantage filled with endless possibilities.",
+        "Most importantly, I realized I didn't have to do it alone, I found a support system and a network of change-makers.",
+        "LTS is one of those experiences you'll always look back on with gratitude.",
+        "Don't hesitate, Make the move",
+      ],
     },
     {
       id: 5,
       src: "/eun.jpeg",
       name: "Eunice Solomon",
       title: "Team Leader, MX 26.27",
+      story: [
+        "A year ago, I almost didn't attend LTS. Finances were tight, and the thought of walking into a room full of strangers was intimidating. I almost let doubt win.",
+        "I'm so grateful I didn't.",
+        "LTS became the highlight of my first AIESEC year. I met incredible people - we worked like we didn't have time to play, and played like we didn't have spaces the next day. Somewhere in between the sessions and the laughter, everything shifted.",
+        "I walked away with deep AIESEC knowledge and memories that changed everything.",
+        "If you're starting your journey, don't miss it.",
+        "Come and experience how Blue Bloods rock.",
+      ],
     },
     {
       id: 6,
@@ -92,6 +116,11 @@ export default function WelcomePage() {
       title: "Team Leader, MKT 26.27 ",
     },
   ];
+
+  const activeArtist =
+    activeArtistId === null
+      ? null
+      : popularArtists.find((artist) => artist.id === activeArtistId) ?? null;
 
   return (
     <main
@@ -107,10 +136,10 @@ export default function WelcomePage() {
           Upcoming releases
         </h2>
 
-        <section className="mt-4 rounded-2xl bg-[#121212] p-2.5 sm:p-3">
+        <section className="mt-4 rounded-md bg-white/10 p-1.5 backdrop-blur-md sm:p-2">
           <div className="flex items-start gap-2 sm:gap-3">
             <div
-              className="relative w-[40%] min-w-[105px] overflow-hidden rounded-xl sm:min-w-[120px]"
+              className="relative aspect-square w-[40%] min-w-[92px] overflow-hidden rounded-md sm:min-w-[104px]"
               style={{
                 backgroundImage: "url('/frame1.jpg')",
                 backgroundSize: "cover",
@@ -131,7 +160,6 @@ export default function WelcomePage() {
                   LEADERSHIP
                 </p>
               </div>
-              <div className="pb-[110%]" />
             </div>
 
             <div className="flex w-[60%] flex-col justify-start py-0">
@@ -153,7 +181,7 @@ export default function WelcomePage() {
               <button
                 type="button"
                 onClick={goToListeningProfile}
-                className="mt-4 rounded-full bg-[#1DB954] px-4 py-2 text-xs font-semibold text-black transition hover:bg-[#1ED760] sm:mt-6 sm:text-sm"
+                className="mt-4 inline-flex w-fit whitespace-nowrap rounded-full bg-[#1DB954] px-5 py-2 text-xs font-semibold leading-none text-black transition hover:bg-[#1ED760] sm:mt-6 sm:text-sm"
               >
                 Join Listening Party
               </button>
@@ -338,7 +366,15 @@ export default function WelcomePage() {
               {popularArtists.map((artist) => (
                 <div
                   key={artist.id}
-                  className="w-[calc((100%-1.5rem)/3.2)] min-w-[calc((100%-1.5rem)/3.2)] flex-none"
+                  className="w-[calc((100%-1.5rem)/3.2)] min-w-[calc((100%-1.5rem)/3.2)] flex-none cursor-pointer"
+                  onClick={() => setActiveArtistId(artist.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      setActiveArtistId(artist.id);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   <img
                     src={artist.src}
@@ -397,16 +433,16 @@ export default function WelcomePage() {
 
               <div className="flex w-[60%] flex-col justify-start py-0">
                 <p className="text-[10px] uppercase tracking-wide text-white/70 sm:text-[11px]">
-                  upcoming event
+                  Upcoming Album
                 </p>
                 <p className="mt-1 text-sm font-semibold leading-snug text-white sm:text-base">
                   LTS 2026: The Tunes of
                 </p>
                 <p className="text-sm font-semibold leading-snug text-white sm:text-base">
-                  Leadership (Listening Party)
+                  Leadership
                 </p>
                 <p className="mt-1 text-xs text-white/80 sm:text-sm">
-                  AiCAL 26.27
+                  AiCAL
                 </p>
               </div>
             </div>
@@ -420,6 +456,47 @@ export default function WelcomePage() {
             Pre-Save
           </button>
         </section>
+
+        {activeArtist?.story ? (
+          <div
+            className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 px-4"
+            onClick={() => setActiveArtistId(null)}
+          >
+            <div className="w-full max-w-[420px]" onClick={(event) => event.stopPropagation()}>
+              <div className="mb-3">
+                <div className="flex items-center gap-2 text-white">
+                  <button
+                    type="button"
+                    onClick={() => setActiveArtistId(null)}
+                    className="rounded-full bg-black p-0.5 text-white"
+                    aria-label="Close artist story card"
+                  >
+                    <IoMdArrowBack className="h-5 w-5" />
+                  </button>
+                  <p className="text-sm font-semibold">{activeArtist.name}</p>
+                </div>
+                <p className="mt-2 ml-9 text-base font-semibold text-white/90">
+                  About
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-[#121212] p-3 text-white sm:p-4">
+                <img
+                  src={activeArtist.src}
+                  alt={activeArtist.name}
+                  className="h-44 w-full rounded-lg object-cover"
+                />
+                <p className="mt-2 text-base font-bold">{activeArtist.name}</p>
+
+                <div className="mt-2 space-y-2 text-xs leading-relaxed text-white/85">
+                  {activeArtist.story.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </main>
   );

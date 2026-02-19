@@ -12,6 +12,9 @@ export default function BottomPlayerNav() {
   const pathname = usePathname();
   const [isProfileModalOpen, setIsProfileModalOpen] = React.useState(false);
   const isWelcomePage = pathname === "/welcome";
+  const isStatisticsPage = pathname === "/statistics";
+  const isSettingsPage = pathname === "/settings";
+  const isSolidProgressPage = isSettingsPage || isStatisticsPage;
   const isUpgradePremiumPage = pathname.startsWith("/upgrade-premium");
   const isListeningProfilePage = pathname === "/listening-profile";
   const isListeningProfileStep2Page =
@@ -27,7 +30,9 @@ export default function BottomPlayerNav() {
           ? "72%"
           : pathname === "/listening-profile/section-3"
             ? "100%"
-            : "45%";
+            : pathname === "/settings"
+              ? "0%"
+          : "45%";
 
   const handlePrimaryAction = () => {
     if (isListeningProfilePage) {
@@ -126,13 +131,13 @@ export default function BottomPlayerNav() {
                     type="button"
                     onClick={handlePrimaryAction}
                     className={`rounded-full p-1.5 transition ${
-                      isWelcomePage
+                      isWelcomePage || isSettingsPage || isStatisticsPage
                         ? "bg-[#1DB954] text-black hover:bg-[#1ED760]"
                         : "text-white/90 hover:bg-white/10"
                     }`}
                     aria-label="Go to listening profile form"
                   >
-                    {isWelcomePage ? (
+                    {isWelcomePage || isSettingsPage || isStatisticsPage ? (
                       <IoPlay className="h-5 w-5" aria-hidden="true" />
                     ) : (
                       <GiNextButton className="h-5 w-5" aria-hidden="true" />
@@ -141,12 +146,16 @@ export default function BottomPlayerNav() {
                 ) : null}
               </div>
             </div>
-            <div className="h-1.5 w-full rounded-full bg-[#1DB954]">
-              <div
-                className="h-1.5 rounded-full bg-white transition-all duration-500 ease-out"
-                style={{ width: progressWidth }}
-              />
-            </div>
+            {isSolidProgressPage ? (
+              <div className="h-1.5 w-full rounded-full bg-[#1DB954]" />
+            ) : (
+              <div className="h-1.5 w-full rounded-full bg-[#1DB954]">
+                <div
+                  className="h-1.5 rounded-full bg-white transition-all duration-500 ease-out"
+                  style={{ width: progressWidth }}
+                />
+              </div>
+            )}
           </div>
         ) : null}
 
@@ -154,7 +163,9 @@ export default function BottomPlayerNav() {
           <button
             type="button"
             onClick={() => router.push("/welcome")}
-            className="flex flex-col items-center gap-1"
+            className={`flex flex-col items-center gap-1 ${
+              isWelcomePage ? "text-[#1DB954]" : ""
+            }`}
           >
             <svg
               viewBox="0 0 24 24"
@@ -166,7 +177,13 @@ export default function BottomPlayerNav() {
             <span className="text-[11px]">Home</span>
           </button>
 
-          <button type="button" className="flex flex-col items-center gap-1">
+          <button
+            type="button"
+            onClick={() => router.push("/statistics")}
+            className={`flex flex-col items-center gap-1 ${
+              isStatisticsPage ? "text-[#1DB954]" : ""
+            }`}
+          >
             <svg
               viewBox="0 0 24 24"
               className="h-6 w-6 fill-current"
@@ -180,7 +197,9 @@ export default function BottomPlayerNav() {
           <button
             type="button"
             onClick={() => router.push("/settings")}
-            className="flex flex-col items-center gap-1"
+            className={`flex flex-col items-center gap-1 ${
+              isSettingsPage ? "text-[#1DB954]" : ""
+            }`}
           >
             <svg
               viewBox="0 0 24 24"
