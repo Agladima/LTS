@@ -315,16 +315,16 @@ export default function ListeningProfileSection3Page() {
 
     try {
       const width = 990;
-      const height = 1560;
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
+      const workHeight = 1800;
+      const workCanvas = document.createElement("canvas");
+      workCanvas.width = width;
+      workCanvas.height = workHeight;
 
-      const ctx = canvas.getContext("2d");
+      const ctx = workCanvas.getContext("2d");
       if (!ctx) throw new Error("Unable to initialize canvas context.");
 
       ctx.fillStyle = profileCardBg;
-      ctx.fillRect(0, 0, width, height);
+      ctx.fillRect(0, 0, width, workHeight);
 
       const cardPadding = 42;
       let logoImg: HTMLImageElement;
@@ -349,7 +349,7 @@ export default function ListeningProfileSection3Page() {
       ctx.font = "500 30px Arial";
       const paragraph =
         'You\'ve created your profile for the "Leadership" listening party on "Free trial" upgrade to "Premium" for unlimited access';
-      const textEndY = drawWrappedText(
+      const textLastLineY = drawWrappedText(
         ctx,
         paragraph,
         cardPadding,
@@ -358,14 +358,25 @@ export default function ListeningProfileSection3Page() {
         42,
       );
 
-      // Main image
-      const imageTop = textEndY + 34;
-      const imageHeight = 380;
+      // Main image (preserve aspect ratio; no stretching)
+      const imageTop = textLastLineY + 34;
+      const imageMaxWidth = width - cardPadding * 2;
+      const imageMaxHeight = 380;
+      const imageRatio = mainImg.width / mainImg.height;
+      let imageWidth = imageMaxWidth;
+      let imageHeight = imageWidth / imageRatio;
+
+      if (imageHeight > imageMaxHeight) {
+        imageHeight = imageMaxHeight;
+        imageWidth = imageHeight * imageRatio;
+      }
+
+      const imageLeft = cardPadding + (imageMaxWidth - imageWidth) / 2;
       ctx.drawImage(
         mainImg,
-        cardPadding,
+        imageLeft,
         imageTop,
-        width - cardPadding * 2,
+        imageWidth,
         imageHeight,
       );
 
@@ -402,8 +413,27 @@ export default function ListeningProfileSection3Page() {
       );
       ctx.fillText("to premium", cardPadding, buttonY + 146);
 
+      // Crop output to card content only (no extra blank space)
+      const finalHeight = Math.ceil(buttonY + 190);
+      const finalCanvas = document.createElement("canvas");
+      finalCanvas.width = width;
+      finalCanvas.height = finalHeight;
+      const finalCtx = finalCanvas.getContext("2d");
+      if (!finalCtx) throw new Error("Unable to initialize final canvas.");
+      finalCtx.drawImage(
+        workCanvas,
+        0,
+        0,
+        width,
+        finalHeight,
+        0,
+        0,
+        width,
+        finalHeight,
+      );
+
       const downloadLink = document.createElement("a");
-      downloadLink.href = canvas.toDataURL("image/png");
+      downloadLink.href = finalCanvas.toDataURL("image/png");
       downloadLink.download = "lts-profile-card.png";
       downloadLink.click();
     } catch (error) {
