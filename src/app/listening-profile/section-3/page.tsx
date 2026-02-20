@@ -35,6 +35,35 @@ const departmentLabelMap: Record<string, string> = {
   eb: "EB",
 };
 
+const genderValueMap: Record<string, string> = {
+  male: "Male",
+  female: "Female",
+};
+
+const memberStatusValueMap: Record<string, string> = {
+  "new-member": "New Member",
+  "old-member": "Old Member",
+  alumnus: "Alumnus",
+};
+
+const roleValueMap: Record<string, string> = {
+  tm: "TM",
+  tl: "TL",
+  lcvp: "LCVP",
+  lcp: "LCP",
+};
+
+const functionalAreaValueMap: Record<string, string> = {
+  "bd-ewa": "BD/EWA",
+  fl: "F&L",
+  icx: "iCX",
+  mx: "MX",
+  ogt: "oGT",
+  ogv: "oGV",
+  mkt: "MKT",
+  eb: "EB",
+};
+
 const extractErrorMessage = (error: unknown) => {
   if (error instanceof Error && error.message) return error.message;
   return "Failed to create registration. Please try again.";
@@ -96,23 +125,47 @@ export default function ListeningProfileSection3Page() {
       full_name: mergedPayload.fullName ?? "",
       email: mergedPayload.email ?? "",
       phone: mergedPayload.phone ?? "",
+      phone_number: mergedPayload.phone ?? "",
       gender: mergedPayload.gender ?? "",
+      gender_choice:
+        genderValueMap[mergedPayload.gender ?? ""] ??
+        mergedPayload.gender ??
+        "",
       dob: mergedPayload.dob ?? "",
       date_of_birth: mergedPayload.dob ?? "",
       user_type: mergedPayload.userType ?? "",
+      member_status:
+        memberStatusValueMap[mergedPayload.userType ?? ""] ??
+        mergedPayload.userType ??
+        "",
       status: mergedPayload.status ?? "",
+      role: roleValueMap[mergedPayload.status ?? ""] ?? mergedPayload.status ?? "",
       functional_area: mergedPayload.genre ?? "",
+      functional_area_choice:
+        functionalAreaValueMap[mergedPayload.genre ?? ""] ??
+        mergedPayload.genre ??
+        "",
       first_listening_party: mergedPayload.firstParty ?? "",
       expectations: mergedPayload.expectations ?? "",
       social_media_handle: mergedPayload.socialHandle ?? "",
       stay_with_opposite_sex: mergedPayload.studioOppositeSex ?? "",
       allergies_remedy: mergedPayload.allergiesRemedy ?? "",
       emergency_contact: mergedPayload.emergencyContact ?? "",
+      emergency_contact_name: mergedPayload.emergencyContact ?? "",
+      emergency_contact_phone: mergedPayload.emergencyContact ?? "",
       emergency_contact_relationship:
+        mergedPayload.emergencyContactRelationship ?? "",
+      emergency_contact_relation:
         mergedPayload.emergencyContactRelationship ?? "",
       suggestions: mergedPayload.suggestions ?? "",
       marketing_consent: mergedPayload.marketingConsent ?? false,
     };
+
+    createPayload.gender =
+      genderValueMap[mergedPayload.gender ?? ""] ?? createPayload.gender;
+    createPayload.functional_area =
+      functionalAreaValueMap[mergedPayload.genre ?? ""] ??
+      createPayload.functional_area;
 
     writeRegistrationDraft(mergedPayload);
 
