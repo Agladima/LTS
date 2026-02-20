@@ -376,9 +376,9 @@ export default function ListeningProfileSection3Page() {
       ctx.fillText("Role:", cardPadding, detailsY + 48);
       ctx.fillText("Department:", cardPadding, detailsY + 96);
       ctx.font = "400 28px Arial";
-      ctx.fillText("[Full Name]", cardPadding + 270, detailsY);
-      ctx.fillText("[Role]", cardPadding + 270, detailsY + 48);
-      ctx.fillText("[Functional Area]", cardPadding + 270, detailsY + 96);
+      ctx.fillText(profilePreview.fullName, cardPadding + 270, detailsY);
+      ctx.fillText(profilePreview.role, cardPadding + 270, detailsY + 48);
+      ctx.fillText(profilePreview.department, cardPadding + 270, detailsY + 96);
 
       // Free trial button
       const buttonY = detailsY + 158;
@@ -699,19 +699,17 @@ export default function ListeningProfileSection3Page() {
                   <span className="inline-block w-28 font-bold">
                     Listener&apos;s Name:
                   </span>
-                  <span className="font-normal">[{profilePreview.fullName}]</span>
+                  <span className="font-normal">{profilePreview.fullName}</span>
                 </p>
                 <p>
                   <span className="inline-block w-28 font-bold">Role:</span>
-                  <span className="font-normal">[{profilePreview.role}]</span>
+                  <span className="font-normal">{profilePreview.role}</span>
                 </p>
                 <p>
                   <span className="inline-block w-28 font-bold">
                     Department:
                   </span>
-                  <span className="font-normal">
-                    [{profilePreview.department}]
-                  </span>
+                  <span className="font-normal">{profilePreview.department}</span>
                 </p>
               </div>
 
