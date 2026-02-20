@@ -127,7 +127,7 @@ export default function BottomPlayerNav() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-1.5">
+              <div className="mr-4 flex items-center gap-1.5">
                 {isListeningProfileStep2Page || isListeningProfileStep3Page ? (
                   <button
                     type="button"

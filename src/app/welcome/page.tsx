@@ -271,7 +271,7 @@ export default function WelcomePage() {
           </div>
         </section>
 
-        <section className="mt-5 flex items-center gap-3 rounded-2xl p-2.5 sm:p-3">
+        <section className="mt-5 flex items-center gap-3 py-2.5 sm:py-3">
           <img
             src="/frame2.png"
             alt="Leadership 101 cover"
@@ -364,7 +364,7 @@ export default function WelcomePage() {
           </h3>
 
           <div className="mt-3 grid grid-cols-2 gap-3">
-            <div className="mx-auto w-[85%]">
+            <div className="w-full">
               <div
                 className="flex aspect-square cursor-pointer items-center justify-center rounded-lg"
                 style={{
@@ -392,7 +392,7 @@ export default function WelcomePage() {
               </p>
             </div>
 
-            <div className="mx-auto w-[85%]">
+            <div className="w-full">
               <img
                 src="/frame3.jpg"
                 alt="Playlist cover"
