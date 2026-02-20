@@ -17,6 +17,29 @@ type RegistrationCreateResponse = {
   email?: string;
 };
 
+const roleLabelMap: Record<string, string> = {
+  tm: "Team Member - TM",
+  tl: "Team Leader - TL",
+  lcvp: "Local Committee Vice President - LCVP",
+  lcp: "Local Committee President - LCP",
+};
+
+const departmentLabelMap: Record<string, string> = {
+  "bd-ewa": "BD/EWA",
+  fl: "F&L",
+  icx: "iCX",
+  mx: "MX",
+  ogt: "oGT",
+  ogv: "oGV",
+  mkt: "MKT",
+  eb: "EB",
+};
+
+const extractErrorMessage = (error: unknown) => {
+  if (error instanceof Error && error.message) return error.message;
+  return "Failed to create registration. Please try again.";
+};
+
 export default function ListeningProfileSection3Page() {
   const router = useRouter();
   const savedDraft = React.useMemo(() => readRegistrationDraft(), []);
@@ -54,8 +77,9 @@ export default function ListeningProfileSection3Page() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
+    const draft = readRegistrationDraft();
     const mergedPayload = {
-      ...readRegistrationDraft(),
+      ...draft,
       socialHandle,
       studioOppositeSex,
       allergiesRemedy,
@@ -65,17 +89,42 @@ export default function ListeningProfileSection3Page() {
       marketingConsent,
     };
 
+    // Keep existing client keys, and also send backend-friendly aliases.
+    const createPayload = {
+      ...mergedPayload,
+      name: mergedPayload.fullName ?? "",
+      full_name: mergedPayload.fullName ?? "",
+      email: mergedPayload.email ?? "",
+      phone: mergedPayload.phone ?? "",
+      gender: mergedPayload.gender ?? "",
+      dob: mergedPayload.dob ?? "",
+      date_of_birth: mergedPayload.dob ?? "",
+      user_type: mergedPayload.userType ?? "",
+      status: mergedPayload.status ?? "",
+      functional_area: mergedPayload.genre ?? "",
+      first_listening_party: mergedPayload.firstParty ?? "",
+      expectations: mergedPayload.expectations ?? "",
+      social_media_handle: mergedPayload.socialHandle ?? "",
+      stay_with_opposite_sex: mergedPayload.studioOppositeSex ?? "",
+      allergies_remedy: mergedPayload.allergiesRemedy ?? "",
+      emergency_contact: mergedPayload.emergencyContact ?? "",
+      emergency_contact_relationship:
+        mergedPayload.emergencyContactRelationship ?? "",
+      suggestions: mergedPayload.suggestions ?? "",
+      marketing_consent: mergedPayload.marketingConsent ?? false,
+    };
+
     writeRegistrationDraft(mergedPayload);
 
     try {
       const response = await apiPost<RegistrationCreateResponse>(
         "/registration/create/",
-        mergedPayload,
+        createPayload,
       );
       writeRegistrationResult(response);
     } catch (error) {
       console.error(error);
-      alert("Failed to create registration. Please try again.");
+      alert(extractErrorMessage(error));
       setIsSubmitting(false);
       return;
     }
@@ -85,8 +134,9 @@ export default function ListeningProfileSection3Page() {
       cardColors[Math.floor(Math.random() * cardColors.length)];
     setProfilePreview({
       fullName: mergedPayload.fullName ?? "Full Name",
-      role: mergedPayload.status ?? "Role",
-      department: mergedPayload.genre ?? "Functional Area",
+      role: roleLabelMap[mergedPayload.status ?? ""] ?? "Role",
+      department:
+        departmentLabelMap[mergedPayload.genre ?? ""] ?? "Functional Area",
     });
     setProfileCardBg(randomColor);
     setShowProfileCard(true);
