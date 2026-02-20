@@ -8,7 +8,7 @@ const resolveBackendBaseUrl = () =>
 const buildTargetUrl = (path: string[], search: string) => {
   const base = resolveBackendBaseUrl().replace(/\/+$/, "");
   const suffix = path.join("/");
-  return `${base}/${suffix}${search}`;
+  return `${base}/${suffix}/${search}`;
 };
 
 const forwardRequest = async (

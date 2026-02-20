@@ -69,6 +69,8 @@ const extractErrorMessage = (error: unknown) => {
   return "Failed to create registration. Please try again.";
 };
 
+const extractPhoneDigits = (value: string) => value.replace(/\D/g, "");
+
 export default function ListeningProfileSection3Page() {
   const router = useRouter();
   const savedDraft = React.useMemo(() => readRegistrationDraft(), []);
@@ -102,6 +104,23 @@ export default function ListeningProfileSection3Page() {
     department: savedDraft.genre ?? "Functional Area",
   });
 
+  const openSuccessPopup = (payload: {
+    fullName?: string;
+    status?: string;
+    genre?: string;
+  }) => {
+    const cardColors = ["#FFCDD2", "#8A38F5", "#FBE72E"];
+    const randomColor =
+      cardColors[Math.floor(Math.random() * cardColors.length)];
+    setProfilePreview({
+      fullName: payload.fullName ?? "Full Name",
+      role: roleLabelMap[payload.status ?? ""] ?? "Role",
+      department: departmentLabelMap[payload.genre ?? ""] ?? "Functional Area",
+    });
+    setProfileCardBg(randomColor);
+    setShowProfileCard(true);
+  };
+
   const handleOpenProfileCard = async () => {
     if (isSubmitting) return;
     setIsSubmitting(true);
@@ -118,14 +137,45 @@ export default function ListeningProfileSection3Page() {
       marketingConsent,
     };
 
+    const emergencyPhoneDigits = extractPhoneDigits(
+      mergedPayload.emergencyContact ?? "",
+    );
+    const primaryPhoneDigits = extractPhoneDigits(mergedPayload.phone ?? "");
+    const resolvedEmergencyPhone = emergencyPhoneDigits || primaryPhoneDigits;
+    const resolvedEmergencyName =
+      (mergedPayload.emergencyContact ?? "").trim() ||
+      (mergedPayload.fullName ?? "").trim();
+
+    const missingFields: string[] = [];
+    if (!mergedPayload.fullName?.trim()) missingFields.push("Full name");
+    if (!mergedPayload.email?.trim()) missingFields.push("Email");
+    if (!primaryPhoneDigits) missingFields.push("Phone number");
+    if (!mergedPayload.gender) missingFields.push("Gender");
+    if (!mergedPayload.userType) missingFields.push("Old or New user");
+    if (!mergedPayload.status) missingFields.push("Status");
+    if (!mergedPayload.genre) missingFields.push("Functional area");
+    if (!mergedPayload.dob) missingFields.push("Date of birth");
+    if (!socialHandle.trim()) missingFields.push("Social media handle");
+    if (!resolvedEmergencyName) missingFields.push("Emergency contact name");
+    if (!resolvedEmergencyPhone) missingFields.push("Emergency contact phone");
+    if (!emergencyContactRelationship.trim()) {
+      missingFields.push("Emergency contact relationship");
+    }
+
+    if (missingFields.length > 0) {
+      alert(`Please fill: ${missingFields.join(", ")}`);
+      setIsSubmitting(false);
+      return;
+    }
+
     // Keep existing client keys, and also send backend-friendly aliases.
     const createPayload = {
       ...mergedPayload,
       name: mergedPayload.fullName ?? "",
       full_name: mergedPayload.fullName ?? "",
       email: mergedPayload.email ?? "",
-      phone: mergedPayload.phone ?? "",
-      phone_number: mergedPayload.phone ?? "",
+      phone: primaryPhoneDigits,
+      phone_number: primaryPhoneDigits,
       gender: mergedPayload.gender ?? "",
       gender_choice:
         genderValueMap[mergedPayload.gender ?? ""] ??
@@ -151,12 +201,12 @@ export default function ListeningProfileSection3Page() {
       stay_with_opposite_sex: mergedPayload.studioOppositeSex ?? "",
       allergies_remedy: mergedPayload.allergiesRemedy ?? "",
       emergency_contact: mergedPayload.emergencyContact ?? "",
-      emergency_contact_name: mergedPayload.emergencyContact ?? "",
-      emergency_contact_phone: mergedPayload.emergencyContact ?? "",
+      emergency_contact_name: resolvedEmergencyName,
+      emergency_contact_phone: resolvedEmergencyPhone,
       emergency_contact_relationship:
-        mergedPayload.emergencyContactRelationship ?? "",
+        emergencyContactRelationship.trim(),
       emergency_contact_relation:
-        mergedPayload.emergencyContactRelationship ?? "",
+        emergencyContactRelationship.trim(),
       suggestions: mergedPayload.suggestions ?? "",
       marketing_consent: mergedPayload.marketingConsent ?? false,
     };
@@ -169,30 +219,56 @@ export default function ListeningProfileSection3Page() {
 
     writeRegistrationDraft(mergedPayload);
 
+    let shouldOpenPopup = false;
+
     try {
       const response = await apiPost<RegistrationCreateResponse>(
         "/registration/create/",
         createPayload,
       );
       writeRegistrationResult(response);
+      shouldOpenPopup = true;
     } catch (error) {
       console.error(error);
-      alert(extractErrorMessage(error));
-      setIsSubmitting(false);
-      return;
+      const message = extractErrorMessage(error);
+      const normalized = message.toLowerCase();
+
+      if (normalized.includes("registration with this email already exists")) {
+        shouldOpenPopup = true;
+      } else if (
+        normalized.includes("status 500") ||
+        normalized.includes("internal server error")
+      ) {
+        try {
+          const retryResponse = await apiPost<RegistrationCreateResponse>(
+            "/registration/create/",
+            createPayload,
+          );
+          writeRegistrationResult(retryResponse);
+          shouldOpenPopup = true;
+        } catch (retryError) {
+          const retryMessage = extractErrorMessage(retryError).toLowerCase();
+          if (
+            retryMessage.includes("registration with this email already exists")
+          ) {
+            shouldOpenPopup = true;
+          } else {
+            alert(extractErrorMessage(retryError));
+          }
+        }
+      } else {
+        alert(message);
+      }
     }
 
-    const cardColors = ["#FFCDD2", "#8A38F5", "#FBE72E"];
-    const randomColor =
-      cardColors[Math.floor(Math.random() * cardColors.length)];
-    setProfilePreview({
-      fullName: mergedPayload.fullName ?? "Full Name",
-      role: roleLabelMap[mergedPayload.status ?? ""] ?? "Role",
-      department:
-        departmentLabelMap[mergedPayload.genre ?? ""] ?? "Functional Area",
-    });
-    setProfileCardBg(randomColor);
-    setShowProfileCard(true);
+    if (shouldOpenPopup) {
+      openSuccessPopup({
+        fullName: mergedPayload.fullName,
+        status: mergedPayload.status,
+        genre: mergedPayload.genre,
+      });
+    }
+
     setIsSubmitting(false);
   };
 
