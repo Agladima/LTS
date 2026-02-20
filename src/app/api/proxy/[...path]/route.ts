@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const resolveBackendBaseUrl = () =>
   process.env.BACKEND_API_BASE_URL ??
   process.env.NEXT_PUBLIC_API_BASE_URL ??
-  "https://lts-2026-backend.onrender.com/api";
+  "https://lts-2026-backend.onrender.com/api/";
 
 const buildTargetUrl = (path: string[], search: string) => {
   const base = resolveBackendBaseUrl().replace(/\/+$/, "");
