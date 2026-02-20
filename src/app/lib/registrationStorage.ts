@@ -2,6 +2,7 @@ export const REGISTRATION_DRAFT_KEY = "lts_registration_draft";
 export const REGISTRATION_RESULT_KEY = "lts_registration_result";
 
 export type RegistrationDraft = {
+  profileImageUploaded?: boolean;
   fullName?: string;
   email?: string;
   phone?: string;

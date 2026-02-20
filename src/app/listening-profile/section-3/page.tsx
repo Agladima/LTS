@@ -156,10 +156,15 @@ export default function ListeningProfileSection3Page() {
     if (!mergedPayload.genre) missingFields.push("Functional area");
     if (!mergedPayload.dob) missingFields.push("Date of birth");
     if (!socialHandle.trim()) missingFields.push("Social media handle");
+    if (!studioOppositeSex.trim()) missingFields.push("Studio with opposite sex");
+    if (!emergencyContact.trim()) missingFields.push("Emergency contact");
     if (!resolvedEmergencyName) missingFields.push("Emergency contact name");
     if (!resolvedEmergencyPhone) missingFields.push("Emergency contact phone");
     if (!emergencyContactRelationship.trim()) {
       missingFields.push("Emergency contact relationship");
+    }
+    if (!marketingConsent) {
+      missingFields.push("Marketing consent");
     }
 
     if (missingFields.length > 0) {
@@ -515,6 +520,7 @@ export default function ListeningProfileSection3Page() {
               id="socialHandle"
               name="socialHandle"
               type="text"
+              required
               placeholder="Type an answer"
               value={socialHandle}
               onChange={(event) => setSocialHandle(event.target.value)}
@@ -535,6 +541,7 @@ export default function ListeningProfileSection3Page() {
             <GreenDropdown
               id="studioOppositeSex"
               name="studioOppositeSex"
+              required
               value={studioOppositeSex}
               placeholder="Select an option"
               onChange={setStudioOppositeSex}
@@ -580,6 +587,7 @@ export default function ListeningProfileSection3Page() {
               id="emergencyContact"
               name="emergencyContact"
               type="text"
+              required
               placeholder="Type an answer"
               value={emergencyContact}
               onChange={(event) => setEmergencyContact(event.target.value)}
@@ -601,6 +609,7 @@ export default function ListeningProfileSection3Page() {
               id="emergencyContactRelationship"
               name="emergencyContactRelationship"
               type="text"
+              required
               placeholder="Type an answer"
               value={emergencyContactRelationship}
               onChange={(event) =>
@@ -647,6 +656,7 @@ export default function ListeningProfileSection3Page() {
                     type="radio"
                     name="marketingConsent"
                     value="yes"
+                    required
                     checked={marketingConsent}
                     onChange={() => setMarketingConsent(true)}
                     className="peer absolute inset-0 z-10 m-0 h-full w-full cursor-pointer opacity-0"

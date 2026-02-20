@@ -19,11 +19,20 @@ export default function ListeningProfilePage() {
   const [phone, setPhone] = useState(savedDraft.phone ?? "");
   const [gender, setGender] = useState(savedDraft.gender ?? "");
   const [dob, setDob] = useState(savedDraft.dob ?? "");
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(
+    savedDraft.profileImageUploaded ? "__uploaded__" : null,
+  );
 
   React.useEffect(() => {
-    writeRegistrationDraft({ fullName, email, phone, gender, dob });
-  }, [fullName, email, phone, gender, dob]);
+    writeRegistrationDraft({
+      fullName,
+      email,
+      phone,
+      gender,
+      dob,
+      profileImageUploaded: Boolean(previewImage),
+    });
+  }, [fullName, email, phone, gender, dob, previewImage]);
 
   React.useEffect(() => {
     return () => {
@@ -117,6 +126,7 @@ export default function ListeningProfilePage() {
               id="fullName"
               name="fullName"
               type="text"
+              required
               placeholder="Full Name"
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
@@ -135,6 +145,7 @@ export default function ListeningProfilePage() {
               id="email"
               name="email"
               type="email"
+              required
               placeholder="E-mail"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -153,6 +164,7 @@ export default function ListeningProfilePage() {
               id="phone"
               name="phone"
               type="tel"
+              required
               placeholder="Phone"
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
@@ -173,6 +185,7 @@ export default function ListeningProfilePage() {
             <GreenDropdown
               id="gender"
               name="gender"
+              required
               value={gender}
               placeholder="Select gender"
               onChange={setGender}
@@ -194,6 +207,7 @@ export default function ListeningProfilePage() {
               id="dob"
               name="dob"
               type="date"
+              required
               value={dob}
               onChange={(event) => setDob(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-md outline-none focus:border-[#1DB954] [color-scheme:dark]"

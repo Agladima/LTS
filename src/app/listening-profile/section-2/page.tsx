@@ -167,6 +167,7 @@ export default function ListeningProfileSection2Page() {
               id="expectations"
               name="expectations"
               type="text"
+              required
               placeholder="Type an answer"
               value={expectations}
               onChange={(event) => setExpectations(event.target.value)}

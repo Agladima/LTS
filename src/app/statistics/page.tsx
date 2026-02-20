@@ -101,7 +101,7 @@ export default function StatisticsPage() {
               <div
                 className="relative h-[112px] w-[112px] flex-none overflow-hidden rounded-md sm:h-[124px] sm:w-[124px]"
                 style={{
-                  backgroundImage: "url('/frame1.jpg')",
+                  backgroundImage: "url('/frame1.jpeg')",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -182,8 +182,8 @@ export default function StatisticsPage() {
         <section
           className="relative mt-8 h-[360px] w-full overflow-hidden rounded-md p-2.5 sm:h-[400px] sm:p-3"
           style={{
-            backgroundImage: "url('/frame4.png')",
-            backgroundSize: "100% 100%",
+            backgroundImage: "url('/frame4.jpeg')",
+            backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
@@ -195,7 +195,7 @@ export default function StatisticsPage() {
               <div
                 className="relative h-[112px] w-[112px] flex-none overflow-hidden rounded-xl sm:h-[124px] sm:w-[124px]"
                 style={{
-                  backgroundImage: "url('/frame1.jpg')",
+                  backgroundImage: "url('/frame1.jpeg')",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",

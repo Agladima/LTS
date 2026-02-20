@@ -6,6 +6,7 @@ import { GiPreviousButton } from "react-icons/gi";
 import { IoPlay } from "react-icons/io5";
 import { IoMdBluetooth } from "react-icons/io";
 import { usePathname, useRouter } from "next/navigation";
+import { readRegistrationDraft } from "@/app/lib/registrationStorage";
 
 export default function BottomPlayerNav() {
   const router = useRouter();
@@ -36,10 +37,41 @@ export default function BottomPlayerNav() {
 
   const handlePrimaryAction = () => {
     if (isListeningProfilePage) {
+      const draft = readRegistrationDraft();
+      const requiredMissing = [
+        !draft.profileImageUploaded,
+        !draft.fullName?.trim(),
+        !draft.email?.trim(),
+        !draft.phone?.trim(),
+        !draft.gender?.trim(),
+        !draft.dob?.trim(),
+      ].some(Boolean);
+
+      if (requiredMissing) {
+        alert(
+          "Please upload image and complete all required fields before continuing.",
+        );
+        return;
+      }
+
       router.push("/listening-profile/section-2");
       return;
     }
     if (isListeningProfileStep2Page) {
+      const draft = readRegistrationDraft();
+      const missingStep2Fields = [
+        !draft.userType?.trim(),
+        !draft.status?.trim(),
+        !draft.genre?.trim(),
+        !draft.firstParty?.trim(),
+        !draft.expectations?.trim(),
+      ].some(Boolean);
+
+      if (missingStep2Fields) {
+        alert("Please complete all required fields before continuing.");
+        return;
+      }
+
       router.push("/listening-profile/section-3");
       return;
     }

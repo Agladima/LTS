@@ -239,11 +239,11 @@ export default function WelcomePage() {
 
   return (
     <main
-      className={`min-h-screen bg-black px-4 py-8 text-white transition-opacity duration-200 sm:px-6 sm:py-12 ${
+      className={`min-h-screen overflow-x-hidden bg-black px-3 py-8 text-white transition-opacity duration-200 sm:px-6 sm:py-12 ${
         isNavigating ? "opacity-0" : "opacity-100"
       }`}
     >
-      <div className="mx-auto w-full max-w-[450px]">
+      <div className="mx-auto w-full max-w-[430px] sm:max-w-[450px]">
         <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
           {greeting}
         </h1>
@@ -252,11 +252,11 @@ export default function WelcomePage() {
         </h2>
 
         <section className="mt-4 rounded-md bg-white/10 p-1.5 backdrop-blur-md sm:p-2">
-          <div className="flex items-start gap-2 sm:gap-3">
+          <div className="flex items-start gap-2 sm:items-stretch sm:gap-3">
             <div
-              className="relative w-[40%] min-w-[92px] overflow-hidden rounded-md sm:min-w-[104px]"
+              className="relative aspect-square w-[40%] min-w-[92px] overflow-hidden rounded-md sm:aspect-auto sm:w-[34%] sm:min-w-[98px] sm:self-stretch"
               style={{
-                backgroundImage: "url('/frame1.jpg')",
+                backgroundImage: "url('/frame1.jpeg')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -267,7 +267,7 @@ export default function WelcomePage() {
                 alt="LTS logo"
                 className="absolute left-1.5 top-1.5 z-20 h-4 w-auto"
               />
-              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-2 pt-14 text-center sm:pt-20">
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-2 pt-10 text-center sm:pt-14">
                 <p className="text-[9px] uppercase tracking-wide text-[#FF9724] sm:text-[10px]">
                   The Tunes Of
                 </p>
@@ -275,21 +275,20 @@ export default function WelcomePage() {
                   LEADERSHIP
                 </p>
               </div>
-              <div className="pb-[80%]" />
             </div>
 
-            <div className="flex w-[60%] flex-col justify-start py-0">
+            <div className="flex w-[60%] flex-col gap-1 py-0">
               <div>
                 <p className="text-[10px] uppercase tracking-wide text-white/70 sm:text-[11px]">
                   upcoming event
                 </p>
-                <p className="mt-1 text-sm font-semibold leading-snug text-white sm:text-base">
+                <p className="text-[13px] font-semibold leading-snug text-white sm:text-[15px]">
                   LTS 2026: The Tunes of
                 </p>
-                <p className="text-sm font-semibold leading-snug text-white sm:text-base">
+                <p className="text-[13px] font-semibold leading-snug text-white sm:text-[15px]">
                   Leadership (Listening Party)
                 </p>
-                <p className="mt-1 text-xs text-white/80 sm:text-sm">
+                <p className="mt-0.5 text-xs text-white/80 sm:text-sm">
                   AiCAL 26.27
                 </p>
               </div>
@@ -297,7 +296,7 @@ export default function WelcomePage() {
               <button
                 type="button"
                 onClick={goToListeningProfile}
-                className="mt-2 inline-flex w-fit whitespace-nowrap rounded-full bg-[#1DB954] px-5 py-2 text-xs font-semibold leading-none text-black transition hover:bg-[#1ED760] sm:mt-3 sm:text-sm"
+                className="-mt-1 inline-flex w-fit whitespace-nowrap rounded-full bg-[#1DB954] px-5 py-2 text-xs font-semibold leading-none text-black transition hover:bg-[#1ED760] sm:text-sm"
               >
                 Join Listening Party
               </button>
@@ -408,7 +407,7 @@ export default function WelcomePage() {
             Made for you
           </h3>
 
-          <div className="mt-3 grid grid-cols-2 gap-1">
+          <div className="mt-3 grid grid-cols-2 gap-0.5">
             <div className="w-[82%] justify-self-start">
               <div
                 className="flex aspect-square cursor-pointer items-center justify-center rounded-lg"
@@ -437,7 +436,7 @@ export default function WelcomePage() {
               </p>
             </div>
 
-            <div className="-ml-8 w-[82%] justify-self-start">
+            <div className="-ml-6 w-[82%] justify-self-start sm:-ml-6">
               <img
                 src="/frame3.jpg"
                 alt="Playlist cover"
@@ -493,7 +492,7 @@ export default function WelcomePage() {
               {popularArtists.map((artist) => (
                 <div
                   key={artist.id}
-                  className="w-[calc((100%-1.5rem)/3.2)] min-w-[calc((100%-1.5rem)/3.2)] flex-none cursor-pointer"
+                  className="w-[32%] min-w-[108px] flex-none cursor-pointer sm:min-w-[118px]"
                   onClick={() => setActiveArtistId(artist.id)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
@@ -523,8 +522,8 @@ export default function WelcomePage() {
         <section
           className="relative mt-8 h-[360px] w-full overflow-hidden rounded-2xl p-2.5 sm:h-[400px] sm:p-3"
           style={{
-            backgroundImage: "url('/frame4.png')",
-            backgroundSize: "100% 100%",
+            backgroundImage: "url('/frame4.jpeg')",
+            backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
@@ -536,7 +535,7 @@ export default function WelcomePage() {
               <div
                 className="relative w-[40%] min-w-[105px] overflow-hidden rounded-md sm:min-w-[120px]"
                 style={{
-                  backgroundImage: "url('/frame1.jpg')",
+                  backgroundImage: "url('/frame1.jpeg')",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -584,11 +583,11 @@ export default function WelcomePage() {
 
         {activeArtist?.story ? (
           <div
-            className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 px-4"
+            className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 px-3 sm:px-4"
             onClick={() => setActiveArtistId(null)}
           >
             <div
-              className="w-full max-w-[420px]"
+              className="max-h-[85dvh] w-full max-w-[420px] overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
               onClick={(event) => event.stopPropagation()}
             >
               <div className="mb-3">
