@@ -24,7 +24,7 @@ const creditMembers = [
   { image: "/odey.jpeg", name: "Odey Victoria", title: "LTS Photographer." },
   { image: "/sonia.jpeg", name: "Chinyere Sonia", title: "CopyWriter" },
   { image: "/tamen.jpeg", name: "Tar Favour", title: "LTS Videographer " },
-  { image: "/eyo.JPG", name: "Eyo Ibok", title: "Graphics Designer" },
+  { image: "/eyo.jpg", name: "Eyo Ibok", title: "Graphics Designer" },
   { image: "/james.jpeg", name: "Gbaeren James", title: "VIdeo Editor" },
 ];
 
