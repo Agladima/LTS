@@ -48,12 +48,17 @@ export default function WelcomePage() {
     isDraggingRef.current = false;
   };
 
+  React.useEffect(() => {
+    router.prefetch("/listening-profile");
+    router.prefetch("/upgrade-premium");
+    router.prefetch("/settings");
+    router.prefetch("/statistics");
+  }, [router]);
+
   const goToListeningProfile = () => {
     if (isNavigating) return;
     setIsNavigating(true);
-    setTimeout(() => {
-      router.push("/listening-profile");
-    }, 220);
+    router.push("/listening-profile");
   };
 
   const popularArtists = [

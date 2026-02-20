@@ -82,6 +82,19 @@ export default function BottomPlayerNav() {
     return () => observer.disconnect();
   }, [pathname]);
 
+  React.useEffect(() => {
+    const routesToPrefetch = [
+      "/welcome",
+      "/listening-profile",
+      "/listening-profile/section-2",
+      "/listening-profile/section-3",
+      "/upgrade-premium",
+      "/statistics",
+      "/settings",
+    ];
+    routesToPrefetch.forEach((route) => router.prefetch(route));
+  }, [router]);
+
   // Keep landing screen clean; show on all subsequent pages.
   if (pathname === "/") return null;
 

@@ -8,6 +8,11 @@ const LTS = () => {
   const [isNavigating, setIsNavigating] = useState(false);
   const router = useRouter();
 
+  React.useEffect(() => {
+    router.prefetch("/welcome");
+    router.prefetch("/upgrade-premium");
+  }, [router]);
+
   const handleFirstInteraction = () => {
     if (!isSecondScreen) {
       setIsSecondScreen(true);
@@ -17,9 +22,7 @@ const LTS = () => {
   const goToWelcome = () => {
     if (isNavigating) return;
     setIsNavigating(true);
-    setTimeout(() => {
-      router.push("/welcome");
-    }, 220);
+    router.push("/welcome");
   };
 
   const goToUpgradePremium = (event: React.MouseEvent<HTMLButtonElement>) => {
