@@ -15,6 +15,7 @@ type GreenDropdownProps = {
   placeholder: string;
   options: DropdownOption[];
   onChange: (nextValue: string) => void;
+  required?: boolean;
 };
 
 export default function GreenDropdown({
@@ -24,6 +25,7 @@ export default function GreenDropdown({
   placeholder,
   options,
   onChange,
+  required = false,
 }: GreenDropdownProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
@@ -42,7 +44,7 @@ export default function GreenDropdown({
 
   return (
     <div ref={rootRef} className="relative">
-      <input type="hidden" id={id} name={name} value={value} />
+      <input type="hidden" id={id} name={name} value={value} required={required} />
       <button
         type="button"
         aria-haspopup="listbox"
