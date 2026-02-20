@@ -151,7 +151,10 @@ export default function BottomPlayerNav() {
                     aria-label="Go to listening profile form"
                   >
                     {isWelcomePage || isSettingsPage || isStatisticsPage ? (
-                      <IoPlay className="h-5 w-5" aria-hidden="true" />
+                      <IoPlay
+                        className="h-5 w-5 translate-x-[1px]"
+                        aria-hidden="true"
+                      />
                     ) : (
                       <GiNextButton className="h-5 w-5" aria-hidden="true" />
                     )}
