@@ -1,6 +1,4 @@
-const resolveApiBaseUrl = () =>
-  process.env.NEXT_PUBLIC_API_BASE_URL ??
-  "https://lts-2026-backend.onrender.com/api";
+const resolveApiBaseUrl = () => "/api/proxy";
 
 const buildUrl = (path: string) => {
   const API_BASE_URL = resolveApiBaseUrl();
