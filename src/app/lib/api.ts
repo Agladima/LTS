@@ -1,18 +1,6 @@
-const resolveApiBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_API_BASE_URL) {
-    return process.env.NEXT_PUBLIC_API_BASE_URL;
-  }
-
-  if (typeof window !== "undefined") {
-    const { hostname } = window.location;
-    if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return "http://127.0.0.1:8000/api";
-    }
-    return `http://${hostname}:8000/api`;
-  }
-
-  return "http://127.0.0.1:8000/api";
-};
+const resolveApiBaseUrl = () =>
+  process.env.NEXT_PUBLIC_API_BASE_URL ??
+  "https://lts-2026-backend.onrender.com/api";
 
 const buildUrl = (path: string) => {
   const API_BASE_URL = resolveApiBaseUrl();
