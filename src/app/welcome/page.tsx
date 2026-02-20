@@ -19,9 +19,13 @@ export default function WelcomePage() {
   const [isNavigating, setIsNavigating] = useState(false);
   const [activeArtistId, setActiveArtistId] = useState<number | null>(null);
   const artistsScrollRef = useRef<HTMLDivElement>(null);
+  const featuredScrollRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
+  const isFeaturedDraggingRef = useRef(false);
   const dragStartXRef = useRef(0);
+  const featuredDragStartXRef = useRef(0);
   const startScrollLeftRef = useRef(0);
+  const featuredStartScrollLeftRef = useRef(0);
 
   const handleArtistsWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     if (!artistsScrollRef.current) return;
@@ -46,6 +50,35 @@ export default function WelcomePage() {
 
   const handleArtistsMouseUpOrLeave = () => {
     isDraggingRef.current = false;
+  };
+
+  const handleFeaturedWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (!featuredScrollRef.current) return;
+    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    event.preventDefault();
+    featuredScrollRef.current.scrollLeft += event.deltaY;
+  };
+
+  const handleFeaturedMouseDown = (
+    event: React.MouseEvent<HTMLDivElement>,
+  ) => {
+    if (!featuredScrollRef.current) return;
+    isFeaturedDraggingRef.current = true;
+    featuredDragStartXRef.current = event.clientX;
+    featuredStartScrollLeftRef.current = featuredScrollRef.current.scrollLeft;
+  };
+
+  const handleFeaturedMouseMove = (
+    event: React.MouseEvent<HTMLDivElement>,
+  ) => {
+    if (!featuredScrollRef.current || !isFeaturedDraggingRef.current) return;
+    const deltaX = event.clientX - featuredDragStartXRef.current;
+    featuredScrollRef.current.scrollLeft =
+      featuredStartScrollLeftRef.current - deltaX;
+  };
+
+  const handleFeaturedMouseUpOrLeave = () => {
+    isFeaturedDraggingRef.current = false;
   };
 
   React.useEffect(() => {
@@ -152,6 +185,24 @@ export default function WelcomePage() {
     activeArtistId === null
       ? null
       : (popularArtists.find((artist) => artist.id === activeArtistId) ?? null);
+
+  const featuredImages = React.useMemo(
+    () =>
+      Array.from(
+        { length: 20 },
+        (_, index) => `/popup (${index + 1}).jpeg`,
+      ),
+    [],
+  );
+
+  const orderedFeaturedImages = React.useMemo(() => {
+    if (!activeArtistId) return featuredImages;
+    const shift = (activeArtistId - 1) % featuredImages.length;
+    return [
+      ...featuredImages.slice(shift),
+      ...featuredImages.slice(0, shift),
+    ];
+  }, [activeArtistId, featuredImages]);
 
   return (
     <main
@@ -524,6 +575,33 @@ export default function WelcomePage() {
                   {activeArtist.story.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
                   ))}
+                </div>
+              </div>
+
+              <div className="mt-3">
+                <p className="mb-2 text-sm font-semibold text-white">
+                  Featured
+                </p>
+                <div
+                  ref={featuredScrollRef}
+                  onWheel={handleFeaturedWheel}
+                  onMouseDown={handleFeaturedMouseDown}
+                  onMouseMove={handleFeaturedMouseMove}
+                  onMouseUp={handleFeaturedMouseUpOrLeave}
+                  onMouseLeave={handleFeaturedMouseUpOrLeave}
+                  className="cursor-grab touch-pan-x overflow-x-auto pb-1 select-none active:cursor-grabbing [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                  style={{ WebkitOverflowScrolling: "touch" }}
+                >
+                  <div className="flex gap-2 pr-2">
+                    {orderedFeaturedImages.map((imageSrc, index) => (
+                      <img
+                        key={`${activeArtist.id}-${imageSrc}`}
+                        src={imageSrc}
+                        alt={`Featured ${index + 1}`}
+                        className="h-20 w-20 flex-none rounded-full object-cover"
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
