@@ -62,6 +62,11 @@ export default function WelcomePage() {
       src: "/lcp.jpg",
       name: "Betiang Chris-Eugene",
       title: "LCP 26.27",
+      story: [
+        "LTS season is one of my most anticipated period in an AIESEC year because despite not attending my own, I have gone on to every single one after that, totalling three and my happiness increases every year.",
+        "I always get to meet new AIESECers, and engage as much as possible. The best szn fr.",
+        "It's my greatest honour to host the next one and shape how people's AIESEC experiences go, I can't wait to see you.",
+      ],
     },
     {
       id: 2,
@@ -76,7 +81,7 @@ export default function WelcomePage() {
       title: "LCVP MX 25.26",
       story: [
         "My LTS story began with uncertainty, it was the first time sharing a room with the opposite sex and it was new and I was skeptical at first. But I quickly realized that AIESECers are different: kind, respectful, and driven.",
-        'Then I heard the words, "Don\'t just pass through AIESEC, let AIESEC pass through you." And something shifted in me. I decided I wouldn\'t leave AIESEC the same way I came.',
+        "Then I heard the words, \"Don't just pass through AIESEC, let AIESEC pass through you.\" And something shifted in me. I decided I wouldn't leave AIESEC the same way I came.",
         "LTS was fun, intense, and unforgettable from powerful sessions to tribe wars no one wanted to lose. I made friends who are still in my corner today. I honestly wished the three days didn't come to an end, it was one of the best experiences I've had as a youth.",
         "That was where I found my purpose. LTS opened my eyes to the real meaning of AIESEC and became the foundation of my journey.",
         "If there's one thing I'll say; don't miss LTS. It's where your real story begins.",
@@ -114,13 +119,34 @@ export default function WelcomePage() {
       src: "/pasc.jpeg",
       name: "Paschal Betiang",
       title: "Team Leader, MKT 26.27 ",
+      story: [
+        'I used to think people were exaggerating when they said, "There\'s no conference like an AIESEC conference." Then I attended one in Port Harcourt and everything I thought I knew about AIESEC changed.',
+        'But my first real taste of that magic was at LTS. I walked in thinking I wouldn\'t fit in. That maybe I was "too much." Instead, I found a space where I was fully seen, fully accepted, and instantly connected faster than I ever expected.',
+        "There's truly nothing like AIESEC gatherings. Every conference feels like the first time; fresh, electric, unforgettable.",
+        "You think you're too much? Attend.",
+        "You think you don't know enough? Attend.",
+        "One or two years from now, you'll be telling your own story. The only question is; what do you want it to say?",
+      ],
+    },
+    {
+      id: 7,
+      src: "/joyce.jpeg",
+      name: "Joyce Yutendala",
+      title: "MCVP BD/EWA, AiLiberia",
+      story: [
+        "The Local Training Seminar appeared modest in scale, yet it altered the direction of my thinking. It did not merely transmit skills; it restructured how I understood leadership, responsibility, and human capacity.",
+        "In that space, ideas were no longer abstract; they became disciplines of action, and values became obligations.",
+        "Through LTS, participation matured into intention, and curiosity into purpose.",
+        "I learned to see challenges as instruments of growth and local effort as capable of wider consequence.",
+        "What endured was not information, but a way of reasoning: that leadership is not granted by position, but formed through awareness, deliberate choice, and service to others.",
+      ],
     },
   ];
 
   const activeArtist =
     activeArtistId === null
       ? null
-      : popularArtists.find((artist) => artist.id === activeArtistId) ?? null;
+      : (popularArtists.find((artist) => artist.id === activeArtistId) ?? null);
 
   return (
     <main
@@ -441,9 +467,7 @@ export default function WelcomePage() {
                 <p className="text-sm font-semibold leading-snug text-white sm:text-base">
                   Leadership
                 </p>
-                <p className="mt-1 text-xs text-white/80 sm:text-sm">
-                  AiCAL
-                </p>
+                <p className="mt-1 text-xs text-white/80 sm:text-sm">AiCAL</p>
               </div>
             </div>
           </div>
@@ -462,7 +486,10 @@ export default function WelcomePage() {
             className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 px-4"
             onClick={() => setActiveArtistId(null)}
           >
-            <div className="w-full max-w-[420px]" onClick={(event) => event.stopPropagation()}>
+            <div
+              className="w-full max-w-[420px]"
+              onClick={(event) => event.stopPropagation()}
+            >
               <div className="mb-3">
                 <div className="flex items-center gap-2 text-white">
                   <button

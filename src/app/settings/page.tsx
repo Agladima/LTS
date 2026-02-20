@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 const creditMembers = [
   {
-    image: "/ .jpeg",
+    image: "/francis.jpeg",
     name: "Francis Adalikwu",
     title: "Marketing Manager - 26.227",
   },
@@ -21,11 +21,11 @@ const creditMembers = [
     title: "UI/UX Designer (OCVP DIXP)",
   },
   { image: "/pasc.jpeg", name: "Betiang Paschal", title: "Backend Developer" },
-  { image: "/odey.jpeg", name: "Odey Victoria", title: "hmmmmmm" },
+  { image: "/odey.jpeg", name: "Odey Victoria", title: "LTS Photographer." },
   { image: "/sonia.jpeg", name: "Chinyere Sonia", title: "CopyWriter" },
-  { image: "/tamen.jpeg", name: "Tar Favour", title: "hmmmmm" },
+  { image: "/tamen.jpeg", name: "Tar Favour", title: "LTS Videographer " },
   { image: "/eyo.JPG", name: "Eyo Ibok", title: "Graphics Designer" },
-  { image: "/.jpg", name: "Gbarem James", title: "VIdeo Editor" },
+  { image: "/james.jpeg", name: "Gbaeren James", title: "VIdeo Editor" },
 ];
 
 export default function SettingsPage() {
