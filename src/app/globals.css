@@ -21,3 +21,18 @@ option:focus {
   background: #1db954 !important;
   color: #000 !important;
 }
+
+/* Date input theme styling (native popup itself remains browser-controlled). */
+input[type="date"] {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(67%) sepia(74%) saturate(534%) hue-rotate(86deg)
+    brightness(92%) contrast(96%);
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-datetime-edit {
+  color: #e8e8e8;
+}
