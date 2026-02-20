@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import GreenDropdown from "@/app/components/GreenDropdown";
 import { apiPost } from "@/app/lib/api";
 import {
+  clearRegistrationDraft,
   readRegistrationDraft,
   writeRegistrationDraft,
   writeRegistrationResult,
@@ -91,9 +92,7 @@ export default function ListeningProfileSection3Page() {
   const [suggestions, setSuggestions] = React.useState(
     savedDraft.suggestions ?? "",
   );
-  const [marketingConsent, setMarketingConsent] = React.useState(
-    savedDraft.marketingConsent ?? false,
-  );
+  const [marketingConsent, setMarketingConsent] = React.useState(false);
   const [showProfileCard, setShowProfileCard] = React.useState(false);
   const [profileCardBg, setProfileCardBg] = React.useState("#FFCDD2");
   const [isDownloading, setIsDownloading] = React.useState(false);
@@ -272,6 +271,14 @@ export default function ListeningProfileSection3Page() {
         status: mergedPayload.status,
         genre: mergedPayload.genre,
       });
+      clearRegistrationDraft();
+      setSocialHandle("");
+      setStudioOppositeSex("");
+      setAllergiesRemedy("");
+      setEmergencyContact("");
+      setEmergencyContactRelationship("");
+      setSuggestions("");
+      setMarketingConsent(false);
     }
 
     setIsSubmitting(false);

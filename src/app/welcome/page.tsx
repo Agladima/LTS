@@ -144,6 +144,12 @@ export default function WelcomePage() {
       src: "/bee.jpeg",
       name: "Favour Bassey",
       title: "LCP 25.26",
+      story: [
+        "In 2023, after receiving my acceptance mail into AIESEC, I honestly didn’t know what to expect from LTS. But the moment I got to the venue, everything changed. The atmosphere was warm, welcoming and filled with young people coordinating every single activity themselves. No “old people in charge” - just passionate youth making things happen. It was inspiring to see.",
+        "The sessions were engaging, interactive and incredibly well-structured. As someone with a short attention span during lectures, I was surprised that I stayed attentive throughout every space. It wasn’t just informative; it was motivational. It opened my mind to what AIESEC truly stands for and what I could become within the organization.",
+        "Looking back over the past three years, I can confidently say that the foundation for my growth in AIESEC was built at LTS. It was my bedrock.",
+        "If you’re second-guessing attending LTS, don’t. It gives you the fundamental knowledge, perspective and drive you need to start strong in AIESEC. You truly wouldn’t want to miss it.",
+      ],
     },
     {
       id: 3,

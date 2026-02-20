@@ -46,3 +46,8 @@ export const writeRegistrationResult = (result: unknown) => {
   if (!isBrowser()) return;
   window.localStorage.setItem(REGISTRATION_RESULT_KEY, JSON.stringify(result));
 };
+
+export const clearRegistrationDraft = () => {
+  if (!isBrowser()) return;
+  window.localStorage.removeItem(REGISTRATION_DRAFT_KEY);
+};
