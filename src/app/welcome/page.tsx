@@ -19,12 +19,16 @@ export default function WelcomePage() {
   const [isNavigating, setIsNavigating] = useState(false);
   const [activeArtistId, setActiveArtistId] = useState<number | null>(null);
   const artistsScrollRef = useRef<HTMLDivElement>(null);
+  const jumpBackScrollRef = useRef<HTMLDivElement>(null);
   const featuredScrollRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
+  const isJumpBackDraggingRef = useRef(false);
   const isFeaturedDraggingRef = useRef(false);
   const dragStartXRef = useRef(0);
+  const jumpBackDragStartXRef = useRef(0);
   const featuredDragStartXRef = useRef(0);
   const startScrollLeftRef = useRef(0);
+  const jumpBackStartScrollLeftRef = useRef(0);
   const featuredStartScrollLeftRef = useRef(0);
 
   const handleArtistsWheel = (event: React.WheelEvent<HTMLDivElement>) => {
@@ -50,6 +54,35 @@ export default function WelcomePage() {
 
   const handleArtistsMouseUpOrLeave = () => {
     isDraggingRef.current = false;
+  };
+
+  const handleJumpBackWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (!jumpBackScrollRef.current) return;
+    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    event.preventDefault();
+    jumpBackScrollRef.current.scrollLeft += event.deltaY;
+  };
+
+  const handleJumpBackMouseDown = (
+    event: React.MouseEvent<HTMLDivElement>,
+  ) => {
+    if (!jumpBackScrollRef.current) return;
+    isJumpBackDraggingRef.current = true;
+    jumpBackDragStartXRef.current = event.clientX;
+    jumpBackStartScrollLeftRef.current = jumpBackScrollRef.current.scrollLeft;
+  };
+
+  const handleJumpBackMouseMove = (
+    event: React.MouseEvent<HTMLDivElement>,
+  ) => {
+    if (!jumpBackScrollRef.current || !isJumpBackDraggingRef.current) return;
+    const deltaX = event.clientX - jumpBackDragStartXRef.current;
+    jumpBackScrollRef.current.scrollLeft =
+      jumpBackStartScrollLeftRef.current - deltaX;
+  };
+
+  const handleJumpBackMouseUpOrLeave = () => {
+    isJumpBackDraggingRef.current = false;
   };
 
   const handleFeaturedWheel = (event: React.WheelEvent<HTMLDivElement>) => {
@@ -221,7 +254,7 @@ export default function WelcomePage() {
         <section className="mt-4 rounded-md bg-white/10 p-1.5 backdrop-blur-md sm:p-2">
           <div className="flex items-start gap-2 sm:gap-3">
             <div
-              className="relative aspect-square w-[40%] min-w-[92px] overflow-hidden rounded-md sm:min-w-[104px]"
+              className="relative w-[40%] min-w-[92px] overflow-hidden rounded-md sm:min-w-[104px]"
               style={{
                 backgroundImage: "url('/frame1.jpg')",
                 backgroundSize: "cover",
@@ -232,7 +265,7 @@ export default function WelcomePage() {
               <img
                 src="/layer1.png"
                 alt="LTS logo"
-                className="absolute left-2 top-2 z-20 h-6 w-auto sm:h-7"
+                className="absolute left-1.5 top-1.5 z-20 h-4 w-auto"
               />
               <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-2 pt-14 text-center sm:pt-20">
                 <p className="text-[9px] uppercase tracking-wide text-[#FF9724] sm:text-[10px]">
@@ -242,6 +275,7 @@ export default function WelcomePage() {
                   LEADERSHIP
                 </p>
               </div>
+              <div className="pb-[80%]" />
             </div>
 
             <div className="flex w-[60%] flex-col justify-start py-0">
@@ -263,7 +297,7 @@ export default function WelcomePage() {
               <button
                 type="button"
                 onClick={goToListeningProfile}
-                className="mt-4 inline-flex w-fit whitespace-nowrap rounded-full bg-[#1DB954] px-5 py-2 text-xs font-semibold leading-none text-black transition hover:bg-[#1ED760] sm:mt-6 sm:text-sm"
+                className="mt-2 inline-flex w-fit whitespace-nowrap rounded-full bg-[#1DB954] px-5 py-2 text-xs font-semibold leading-none text-black transition hover:bg-[#1ED760] sm:mt-3 sm:text-sm"
               >
                 Join Listening Party
               </button>
@@ -292,8 +326,18 @@ export default function WelcomePage() {
             Jump back in
           </h3>
 
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            <div>
+          <div
+            ref={jumpBackScrollRef}
+            onWheel={handleJumpBackWheel}
+            onMouseDown={handleJumpBackMouseDown}
+            onMouseMove={handleJumpBackMouseMove}
+            onMouseUp={handleJumpBackMouseUpOrLeave}
+            onMouseLeave={handleJumpBackMouseUpOrLeave}
+            className="mt-3 cursor-grab touch-pan-x overflow-x-auto pb-1 select-none active:cursor-grabbing [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
+            <div className="flex gap-2 pr-2">
+              <div className="w-[41%] min-w-[41%]">
               <div className="relative w-full overflow-hidden rounded-lg">
                 <img
                   src="/lts23.jpg"
@@ -303,7 +347,7 @@ export default function WelcomePage() {
                 <img
                   src="/layer1.png"
                   alt="LTS logo"
-                  className="absolute left-1.5 top-1.5 z-20 h-5 w-auto"
+                  className="absolute left-1.5 top-1.5 z-20 h-4 w-auto"
                 />
                 <p className="absolute left-0 bottom-2 z-20 bg-[#8A38F5] px-2 py-0.5 text-[10px] font-semibold text-white">
                   LTS 2023
@@ -314,7 +358,7 @@ export default function WelcomePage() {
               </p>
             </div>
 
-            <div>
+            <div className="w-[41%] min-w-[41%]">
               <div className="relative w-full overflow-hidden rounded-lg">
                 <img
                   src="/lts24.JPG"
@@ -324,7 +368,7 @@ export default function WelcomePage() {
                 <img
                   src="/layer1.png"
                   alt="LTS logo"
-                  className="absolute left-1.5 top-1.5 z-20 h-5 w-auto"
+                  className="absolute left-1.5 top-1.5 z-20 h-4 w-auto"
                 />
                 <p className="absolute left-0 bottom-2 z-20 bg-[#022C35] px-2 py-0.5 text-[10px] font-semibold text-white">
                   LTS 2024
@@ -335,7 +379,7 @@ export default function WelcomePage() {
               </p>
             </div>
 
-            <div>
+            <div className="w-[41%] min-w-[41%]">
               <div className="relative w-full overflow-hidden rounded-lg">
                 <img
                   src="/lts25.jpg"
@@ -345,7 +389,7 @@ export default function WelcomePage() {
                 <img
                   src="/layer1.png"
                   alt="LTS logo"
-                  className="absolute left-1.5 top-1.5 z-20 h-5 w-auto"
+                  className="absolute left-1.5 top-1.5 z-20 h-4 w-auto"
                 />
                 <p className="absolute left-0 bottom-2 z-20 bg-[#037EF3] px-2 py-0.5 text-[10px] font-semibold text-white">
                   LTS 2025
@@ -355,6 +399,7 @@ export default function WelcomePage() {
                 Pictures from LTS 2025
               </p>
             </div>
+            </div>
           </div>
         </section>
 
@@ -363,8 +408,8 @@ export default function WelcomePage() {
             Made for you
           </h3>
 
-          <div className="mt-3 grid grid-cols-2 gap-3">
-            <div className="w-full">
+          <div className="mt-3 grid grid-cols-2 gap-1">
+            <div className="w-[82%] justify-self-start">
               <div
                 className="flex aspect-square cursor-pointer items-center justify-center rounded-lg"
                 style={{
@@ -392,7 +437,7 @@ export default function WelcomePage() {
               </p>
             </div>
 
-            <div className="w-full">
+            <div className="-ml-8 w-[82%] justify-self-start">
               <img
                 src="/frame3.jpg"
                 alt="Playlist cover"
@@ -408,12 +453,12 @@ export default function WelcomePage() {
           </div>
         </section>
 
-        <section className="mt-7 w-full rounded-2xl bg-[#1DB954] px-4 py-5 text-center">
-          <p className="text-base font-semibold leading-snug text-black sm:text-lg">
+        <section className="mt-7 w-full rounded-md bg-[#1DB954] px-4 py-5 text-center">
+          <p className="text-base font-normal leading-snug text-black sm:text-lg">
             If <span className="font-bold">&quot;LEADERSHIP&quot;</span> was a
             Playlist,
           </p>
-          <p className="text-base font-semibold leading-snug text-black sm:text-lg">
+          <p className="text-base font-normal leading-snug text-black sm:text-lg">
             what type of songs will be in it?
           </p>
 
@@ -486,10 +531,10 @@ export default function WelcomePage() {
         >
           <div className="absolute inset-0 bg-black/35" />
 
-          <div className="relative z-10 rounded-2xl bg-[#47464B] p-2 sm:p-2.5">
+          <div className="relative z-10 rounded-md bg-[#47464B] p-2 sm:p-2.5">
             <div className="flex items-start gap-2 sm:gap-3">
               <div
-                className="relative w-[40%] min-w-[105px] overflow-hidden rounded-xl sm:min-w-[120px]"
+                className="relative w-[40%] min-w-[105px] overflow-hidden rounded-md sm:min-w-[120px]"
                 style={{
                   backgroundImage: "url('/frame1.jpg')",
                   backgroundSize: "cover",
@@ -500,7 +545,7 @@ export default function WelcomePage() {
                 <img
                   src="/layer1.png"
                   alt="LTS logo"
-                  className="absolute left-2 top-2 z-20 h-6 w-auto sm:h-7"
+                  className="absolute left-1.5 top-1.5 z-20 h-4 w-auto"
                 />
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-2 pt-14 text-center sm:pt-20">
                   <p className="text-[9px] uppercase tracking-wide text-[#FF9724] sm:text-[10px]">
