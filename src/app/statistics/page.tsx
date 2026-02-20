@@ -2,6 +2,12 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import { apiGet } from "@/app/lib/api";
+import {
+  getListeningProfilesCount,
+  getPremiumListenersCount,
+  type RegistrationStatsResponse,
+} from "@/app/lib/stats";
 
 export default function StatisticsPage() {
   const router = useRouter();
@@ -9,6 +15,8 @@ export default function StatisticsPage() {
     () => new Date("2026-03-12T00:00:00"),
     [],
   );
+  const [listeningProfiles, setListeningProfiles] = React.useState(0);
+  const [premiumListeners, setPremiumListeners] = React.useState(0);
   const [timeLeft, setTimeLeft] = React.useState({
     days: "00",
     hours: "00",
@@ -48,6 +56,31 @@ export default function StatisticsPage() {
     const interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
   }, [eventDate]);
+
+  React.useEffect(() => {
+    let isMounted = true;
+
+    const loadStats = async () => {
+      try {
+        const stats = await apiGet<RegistrationStatsResponse>(
+          "/registration/stats/",
+        );
+        if (!isMounted) return;
+        setListeningProfiles(getListeningProfilesCount(stats));
+        setPremiumListeners(getPremiumListenersCount(stats));
+      } catch (error) {
+        console.error("Failed to load registration stats:", error);
+      }
+    };
+
+    loadStats();
+    const interval = window.setInterval(loadStats, 15000);
+
+    return () => {
+      isMounted = false;
+      window.clearInterval(interval);
+    };
+  }, []);
 
   return (
     <main className="min-h-screen bg-black px-3 py-5 text-white sm:px-6 sm:py-10">
@@ -131,10 +164,14 @@ export default function StatisticsPage() {
         </section>
 
         <div className="mx-auto mt-5 w-[90%]">
-          <p className="text-3xl font-bold leading-none text-white">0</p>
+          <p className="text-3xl font-bold leading-none text-white">
+            {listeningProfiles}
+          </p>
           <p className="mt-1 text-sm text-white/80">Listening Profiles</p>
 
-          <p className="mt-4 text-3xl font-bold leading-none text-white">0</p>
+          <p className="mt-4 text-3xl font-bold leading-none text-white">
+            {premiumListeners}
+          </p>
           <p className="mt-1 text-sm text-white/80">Premium Listeners</p>
         </div>
 

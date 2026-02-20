@@ -4,6 +4,7 @@ import React from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import GreenDropdown from "@/app/components/GreenDropdown";
+import { apiPost } from "@/app/lib/api";
 
 export default function UpgradeToPremiumPage() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function UpgradeToPremiumPage() {
   const [phone, setPhone] = React.useState("");
   const [userType, setUserType] = React.useState("");
   const [premiumPlan, setPremiumPlan] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const planPriceByValue: Record<string, string> = {
     virtual_plan: "N15,000",
@@ -32,15 +34,43 @@ export default function UpgradeToPremiumPage() {
   };
 
   const handleGoToPaymentPage = () => {
-    const query = new URLSearchParams({
-      fullName: fullName || "Full Name",
-      email: email || "Email address",
-      phone: phone || "Phone",
-      userType: userLabelByValue[userType] || "Membership status",
-      premiumPlan: planLabelByValue[premiumPlan] || "Premium plan name",
-      price: planPriceByValue[premiumPlan] || "N20,000",
-    });
-    router.push(`/upgrade-premium/payment?${query.toString()}`);
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    const requestPayload = {
+      email,
+      phone,
+      name: fullName,
+      status: userLabelByValue[userType] || userType,
+      selected_plan: planLabelByValue[premiumPlan] || premiumPlan,
+    };
+
+    apiPost<{ amount?: string | number; charge?: string | number }>(
+      "/registration/upgrade/",
+      requestPayload,
+    )
+      .then((response) => {
+        const amountFromApi = response.amount ?? response.charge;
+        const resolvedAmount =
+          amountFromApi === undefined || amountFromApi === null
+            ? planPriceByValue[premiumPlan] || "N20,000"
+            : String(amountFromApi);
+
+        const query = new URLSearchParams({
+          fullName: fullName || "Full Name",
+          email: email || "Email address",
+          phone: phone || "Phone",
+          userType: userLabelByValue[userType] || "Membership status",
+          premiumPlan: planLabelByValue[premiumPlan] || "Premium plan name",
+          price: resolvedAmount,
+        });
+        router.push(`/upgrade-premium/payment?${query.toString()}`);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Upgrade failed. Please check your details and try again.");
+      })
+      .finally(() => setIsSubmitting(false));
   };
 
   return (
@@ -213,7 +243,7 @@ export default function UpgradeToPremiumPage() {
             onClick={handleGoToPaymentPage}
             className="mx-auto mt-5 block w-[60%] rounded-full bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-white/90"
           >
-            Upgrade to Premium
+            {isSubmitting ? "Processing..." : "Upgrade to Premium"}
           </button>
         </div>
       </div>

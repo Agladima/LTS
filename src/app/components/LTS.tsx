@@ -76,7 +76,7 @@ const LTS = () => {
               <p className="text-white text-2xl sm:text-3xl leading-snug text-left">
                 If{" "}
                 <span className="text-green-500 font-semibold">
-                  "Leadership"
+                  &quot;Leadership&quot;
                 </span>{" "}
                 was a <br />
                 playlist what would it <br />
@@ -132,3 +132,4 @@ const LTS = () => {
 };
 
 export default LTS;
+

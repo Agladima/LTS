@@ -5,20 +5,92 @@ import Image from "next/image";
 import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import GreenDropdown from "@/app/components/GreenDropdown";
+import { apiPost } from "@/app/lib/api";
+import {
+  readRegistrationDraft,
+  writeRegistrationDraft,
+  writeRegistrationResult,
+} from "@/app/lib/registrationStorage";
+
+type RegistrationCreateResponse = {
+  registration_id?: string | number;
+  email?: string;
+};
 
 export default function ListeningProfileSection3Page() {
   const router = useRouter();
-  const [studioOppositeSex, setStudioOppositeSex] = React.useState("");
+  const savedDraft = React.useMemo(() => readRegistrationDraft(), []);
+  const [studioOppositeSex, setStudioOppositeSex] = React.useState(
+    savedDraft.studioOppositeSex ?? "",
+  );
+  const [socialHandle, setSocialHandle] = React.useState(
+    savedDraft.socialHandle ?? "",
+  );
+  const [allergiesRemedy, setAllergiesRemedy] = React.useState(
+    savedDraft.allergiesRemedy ?? "",
+  );
+  const [emergencyContact, setEmergencyContact] = React.useState(
+    savedDraft.emergencyContact ?? "",
+  );
+  const [emergencyContactRelationship, setEmergencyContactRelationship] =
+    React.useState(savedDraft.emergencyContactRelationship ?? "");
+  const [suggestions, setSuggestions] = React.useState(
+    savedDraft.suggestions ?? "",
+  );
+  const [marketingConsent, setMarketingConsent] = React.useState(
+    savedDraft.marketingConsent ?? false,
+  );
   const [showProfileCard, setShowProfileCard] = React.useState(false);
   const [profileCardBg, setProfileCardBg] = React.useState("#FFCDD2");
   const [isDownloading, setIsDownloading] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [profilePreview, setProfilePreview] = React.useState({
+    fullName: savedDraft.fullName ?? "Full Name",
+    role: savedDraft.status ?? "Role",
+    department: savedDraft.genre ?? "Functional Area",
+  });
 
-  const handleOpenProfileCard = () => {
+  const handleOpenProfileCard = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    const mergedPayload = {
+      ...readRegistrationDraft(),
+      socialHandle,
+      studioOppositeSex,
+      allergiesRemedy,
+      emergencyContact,
+      emergencyContactRelationship,
+      suggestions,
+      marketingConsent,
+    };
+
+    writeRegistrationDraft(mergedPayload);
+
+    try {
+      const response = await apiPost<RegistrationCreateResponse>(
+        "/registration/create/",
+        mergedPayload,
+      );
+      writeRegistrationResult(response);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to create registration. Please try again.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const cardColors = ["#FFCDD2", "#8A38F5", "#FBE72E"];
     const randomColor =
       cardColors[Math.floor(Math.random() * cardColors.length)];
+    setProfilePreview({
+      fullName: mergedPayload.fullName ?? "Full Name",
+      role: mergedPayload.status ?? "Role",
+      department: mergedPayload.genre ?? "Functional Area",
+    });
     setProfileCardBg(randomColor);
     setShowProfileCard(true);
+    setIsSubmitting(false);
   };
 
   const loadImage = (src: string) =>
@@ -177,6 +249,26 @@ export default function ListeningProfileSection3Page() {
     };
   }, [showProfileCard]);
 
+  React.useEffect(() => {
+    writeRegistrationDraft({
+      socialHandle,
+      studioOppositeSex,
+      allergiesRemedy,
+      emergencyContact,
+      emergencyContactRelationship,
+      suggestions,
+      marketingConsent,
+    });
+  }, [
+    socialHandle,
+    studioOppositeSex,
+    allergiesRemedy,
+    emergencyContact,
+    emergencyContactRelationship,
+    suggestions,
+    marketingConsent,
+  ]);
+
   return (
     <main className="min-h-screen bg-black px-3 py-5 text-white sm:px-6 sm:py-10">
       <div
@@ -215,6 +307,8 @@ export default function ListeningProfileSection3Page() {
               name="socialHandle"
               type="text"
               placeholder="Type an answer"
+              value={socialHandle}
+              onChange={(event) => setSocialHandle(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-4 py-4 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
             <p className="mt-1 text-xs font-semibold text-white/75">
@@ -257,6 +351,8 @@ export default function ListeningProfileSection3Page() {
               name="allergiesRemedy"
               type="text"
               placeholder="Type an answer"
+              value={allergiesRemedy}
+              onChange={(event) => setAllergiesRemedy(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-4 py-4 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
             <p className="mt-1 text-xs font-semibold text-white/75">
@@ -276,6 +372,8 @@ export default function ListeningProfileSection3Page() {
               name="emergencyContact"
               type="text"
               placeholder="Type an answer"
+              value={emergencyContact}
+              onChange={(event) => setEmergencyContact(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-4 py-4 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
             <p className="mt-1 text-xs font-semibold text-white/75">
@@ -295,6 +393,10 @@ export default function ListeningProfileSection3Page() {
               name="emergencyContactRelationship"
               type="text"
               placeholder="Type an answer"
+              value={emergencyContactRelationship}
+              onChange={(event) =>
+                setEmergencyContactRelationship(event.target.value)
+              }
               className="w-full rounded-md border border-white/30 bg-white/10 px-4 py-4 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
             <p className="mt-1 text-xs font-semibold text-white/75">
@@ -314,6 +416,8 @@ export default function ListeningProfileSection3Page() {
               name="suggestions"
               type="text"
               placeholder="Type and answer"
+              value={suggestions}
+              onChange={(event) => setSuggestions(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-4 py-4 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
             <p className="mt-1 text-xs font-semibold text-white/75">
@@ -334,6 +438,8 @@ export default function ListeningProfileSection3Page() {
                     type="radio"
                     name="marketingConsent"
                     value="yes"
+                    checked={marketingConsent}
+                    onChange={() => setMarketingConsent(true)}
                     className="peer absolute inset-0 z-10 m-0 h-full w-full cursor-pointer opacity-0"
                   />
                   <span className="pointer-events-none block h-full w-full rounded-full border border-black bg-black peer-checked:bg-[#777777]" />
@@ -355,7 +461,7 @@ export default function ListeningProfileSection3Page() {
               onClick={handleOpenProfileCard}
               className="mx-auto mt-5 block w-[60%] rounded-full bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-white/90"
             >
-              Create Profile
+              {isSubmitting ? "Creating..." : "Create Profile"}
             </button>
           </div>
         </form>
@@ -414,17 +520,19 @@ export default function ListeningProfileSection3Page() {
                   <span className="inline-block w-28 font-bold">
                     Listener&apos;s Name:
                   </span>
-                  <span className="font-normal">[Full Name]</span>
+                  <span className="font-normal">[{profilePreview.fullName}]</span>
                 </p>
                 <p>
                   <span className="inline-block w-28 font-bold">Role:</span>
-                  <span className="font-normal">[Role]</span>
+                  <span className="font-normal">[{profilePreview.role}]</span>
                 </p>
                 <p>
                   <span className="inline-block w-28 font-bold">
                     Department:
                   </span>
-                  <span className="font-normal">[Functional Area]</span>
+                  <span className="font-normal">
+                    [{profilePreview.department}]
+                  </span>
                 </p>
               </div>
 

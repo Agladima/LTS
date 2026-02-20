@@ -3,6 +3,11 @@
 import React from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import { apiGet } from "@/app/lib/api";
+import {
+  getPremiumListenersCount,
+  type RegistrationStatsResponse,
+} from "@/app/lib/stats";
 
 const creditMembers = [
   {
@@ -30,6 +35,31 @@ const creditMembers = [
 
 export default function SettingsPage() {
   const router = useRouter();
+  const [premiumListeners, setPremiumListeners] = React.useState(0);
+
+  React.useEffect(() => {
+    let isMounted = true;
+
+    const loadStats = async () => {
+      try {
+        const stats = await apiGet<RegistrationStatsResponse>(
+          "/registration/stats/",
+        );
+        if (!isMounted) return;
+        setPremiumListeners(getPremiumListenersCount(stats));
+      } catch (error) {
+        console.error("Failed to load premium listeners count:", error);
+      }
+    };
+
+    loadStats();
+    const interval = window.setInterval(loadStats, 15000);
+
+    return () => {
+      isMounted = false;
+      window.clearInterval(interval);
+    };
+  }, []);
 
   return (
     <main className="min-h-screen bg-black px-3 py-5 text-white sm:px-6 sm:py-10">
@@ -50,7 +80,7 @@ export default function SettingsPage() {
         </div>
 
         <div className="text-left">
-          <p className="text-4xl font-bold leading-none">0</p>
+          <p className="text-4xl font-bold leading-none">{premiumListeners}</p>
           <p className="mt-1 text-sm text-white/80">
             Number of Premium listeners
           </p>

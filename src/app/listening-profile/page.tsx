@@ -5,6 +5,10 @@ import { IoMdArrowBack } from "react-icons/io";
 import { IoCameraOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import GreenDropdown from "@/app/components/GreenDropdown";
+import {
+  readRegistrationDraft,
+  writeRegistrationDraft,
+} from "@/app/lib/registrationStorage";
 
 const WEEK_DAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const MONTH_NAMES = [
@@ -37,9 +41,13 @@ const formatDisplayDate = (isoDate: string) => {
 
 export default function ListeningProfilePage() {
   const router = useRouter();
+  const savedDraft = useMemo(() => readRegistrationDraft(), []);
   const imageInputRef = useRef<HTMLInputElement>(null);
-  const [gender, setGender] = useState("");
-  const [dob, setDob] = useState("");
+  const [fullName, setFullName] = useState(savedDraft.fullName ?? "");
+  const [email, setEmail] = useState(savedDraft.email ?? "");
+  const [phone, setPhone] = useState(savedDraft.phone ?? "");
+  const [gender, setGender] = useState(savedDraft.gender ?? "");
+  const [dob, setDob] = useState(savedDraft.dob ?? "");
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [calendarMonth, setCalendarMonth] = useState(() => {
     const now = new Date();
@@ -78,6 +86,10 @@ export default function ListeningProfilePage() {
     setDob(iso);
     setIsCalendarOpen(false);
   };
+
+  React.useEffect(() => {
+    writeRegistrationDraft({ fullName, email, phone, gender, dob });
+  }, [fullName, email, phone, gender, dob]);
 
   return (
     <main className="min-h-screen bg-black px-3 py-5 text-white sm:px-6 sm:py-10">
@@ -141,6 +153,8 @@ export default function ListeningProfilePage() {
               name="fullName"
               type="text"
               placeholder="Full Name"
+              value={fullName}
+              onChange={(event) => setFullName(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
           </div>
@@ -154,6 +168,8 @@ export default function ListeningProfilePage() {
               name="email"
               type="email"
               placeholder="E-mail"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
           </div>
@@ -167,6 +183,8 @@ export default function ListeningProfilePage() {
               name="phone"
               type="tel"
               placeholder="Phone"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-3 py-2.5 text-sm text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
           </div>

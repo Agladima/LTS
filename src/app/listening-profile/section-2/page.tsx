@@ -4,13 +4,31 @@ import React from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import GreenDropdown from "@/app/components/GreenDropdown";
+import {
+  readRegistrationDraft,
+  writeRegistrationDraft,
+} from "@/app/lib/registrationStorage";
 
 export default function ListeningProfileSection2Page() {
   const router = useRouter();
-  const [userType, setUserType] = React.useState("");
-  const [status, setStatus] = React.useState("");
-  const [genre, setGenre] = React.useState("");
-  const [firstParty, setFirstParty] = React.useState("");
+  const savedDraft = React.useMemo(() => readRegistrationDraft(), []);
+  const [userType, setUserType] = React.useState(savedDraft.userType ?? "");
+  const [status, setStatus] = React.useState(savedDraft.status ?? "");
+  const [genre, setGenre] = React.useState(savedDraft.genre ?? "");
+  const [firstParty, setFirstParty] = React.useState(savedDraft.firstParty ?? "");
+  const [expectations, setExpectations] = React.useState(
+    savedDraft.expectations ?? "",
+  );
+
+  React.useEffect(() => {
+    writeRegistrationDraft({
+      userType,
+      status,
+      genre,
+      firstParty,
+      expectations,
+    });
+  }, [userType, status, genre, firstParty, expectations]);
 
   return (
     <main className="min-h-screen bg-black px-3 py-5 text-white sm:px-6 sm:py-10">
@@ -150,6 +168,8 @@ export default function ListeningProfileSection2Page() {
               name="expectations"
               type="text"
               placeholder="Type an answer"
+              value={expectations}
+              onChange={(event) => setExpectations(event.target.value)}
               className="w-full rounded-md border border-white/30 bg-white/10 px-4 py-4 text-base text-white backdrop-blur-md outline-none focus:border-[#1DB954]"
             />
             <p className="mt-1 text-xs font-semibold text-white/75">

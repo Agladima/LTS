@@ -115,6 +115,7 @@ function UpgradePremiumPaymentContent() {
 
           <button
             type="button"
+            onClick={() => window.open("https://wa.link/2dy5ud", "_blank", "noopener,noreferrer")}
             className="mx-auto mt-5 block w-[52%] rounded-full bg-[#1DB954] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#1ED760]"
           >
             Pay now
