@@ -5,26 +5,74 @@ import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import GreenDropdown from "@/app/components/GreenDropdown";
 import { apiPost } from "@/app/lib/api";
+import {
+  readRegistrationDraft,
+  readRegistrationResult,
+} from "@/app/lib/registrationStorage";
+
+type RegistrationResult = {
+  email?: string;
+  fullName?: string;
+  phone?: string;
+};
 
 export default function UpgradeToPremiumPage() {
   const router = useRouter();
-  const [fullName, setFullName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [phone, setPhone] = React.useState("");
+  const savedDraft = React.useMemo(() => readRegistrationDraft(), []);
+  const savedResult = React.useMemo(
+    () => readRegistrationResult<RegistrationResult>(),
+    [],
+  );
+  const [fullName, setFullName] = React.useState(
+    savedResult?.fullName ?? savedDraft.fullName ?? "",
+  );
+  const [email, setEmail] = React.useState(
+    savedResult?.email ?? savedDraft.email ?? "",
+  );
+  const [phone, setPhone] = React.useState(
+    savedResult?.phone ?? savedDraft.phone ?? "",
+  );
   const [userType, setUserType] = React.useState("");
   const [premiumPlan, setPremiumPlan] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const planPriceByValue: Record<string, string> = {
-    virtual_plan: "N15,000",
-    day_pass_plan: "N18,000",
-    full_hotel_stay: "N20,000",
+    Virtual: "N15,000",
+    "Day Pass": "N18,000",
+    "Full Hotel": "N20,000",
   };
 
   const planLabelByValue: Record<string, string> = {
-    virtual_plan: "Virtual Plan",
-    day_pass_plan: "Day Pass Plan",
-    full_hotel_stay: "Full Hotel Stay",
+    Virtual: "Virtual",
+    "Day Pass": "Day Pass",
+    "Full Hotel": "Full Hotel",
+  };
+  const planOptionLabelByValue: Record<string, string> = {
+    Virtual: "Virtual",
+    "Day Pass": "Day Pass",
+    "Full Hotel": "Full Hotel",
+  };
+  const planAmountByValue: Record<string, string> = {
+    Virtual: "15000",
+    "Day Pass": "18000",
+    "Full Hotel": "20000",
+  };
+  const planCandidatesByValue: Record<string, string[]> = {
+    Virtual: [
+      "Virtual",
+      "virtual",
+      "15000",
+    ],
+    "Day Pass": [
+      "Day Pass",
+      "day pass",
+      "18000",
+    ],
+    "Full Hotel": [
+      "Full Hotel",
+      "full hotel",
+      "20000",
+    ],
   };
 
   const userLabelByValue: Record<string, string> = {
@@ -32,23 +80,87 @@ export default function UpgradeToPremiumPage() {
     old_member: "Old Member",
     alumnus: "Alumnus",
   };
+  const userCandidatesByValue: Record<string, string[]> = {
+    new_member: ["new_member", "new-member", "New Member", "new member"],
+    old_member: ["old_member", "old-member", "Old Member", "old member"],
+    alumnus: ["alumnus", "Alumnus"],
+  };
 
   const handleGoToPaymentPage = () => {
     if (isSubmitting) return;
+
+    const missing = [
+      !fullName.trim() && "Full name",
+      !email.trim() && "Email",
+      !phone.trim() && "Phone number",
+      !userType.trim() && "Old or New user",
+      !premiumPlan.trim() && "Premium plan",
+    ].filter(Boolean) as string[];
+
+    if (missing.length > 0) {
+      alert(`Please fill: ${missing.join(", ")}`);
+      return;
+    }
+
     setIsSubmitting(true);
 
-    const requestPayload = {
-      email,
-      phone,
-      name: fullName,
-      status: userLabelByValue[userType] || userType,
-      selected_plan: planLabelByValue[premiumPlan] || premiumPlan,
+    const normalizedStatus = userLabelByValue[userType] || userType;
+    const normalizedPlan = planLabelByValue[premiumPlan] || premiumPlan;
+    const optionLabelPlan = planOptionLabelByValue[premiumPlan] || premiumPlan;
+    const phoneDigits = phone.replace(/\D/g, "");
+    const normalizedPhone = phoneDigits || phone;
+    const planAmount = planAmountByValue[premiumPlan] || "";
+    const explicitCandidates = planCandidatesByValue[premiumPlan] ?? [];
+    const explicitStatusCandidates = userCandidatesByValue[userType] ?? [];
+    const planVariants = Array.from(
+      new Set([
+        ...explicitCandidates,
+        premiumPlan,
+        premiumPlan.replaceAll("_", " "),
+        normalizedPlan,
+        normalizedPlan.toLowerCase(),
+        optionLabelPlan,
+        optionLabelPlan.replace("(", " ("),
+        planAmount,
+        `${planAmount} NGN`,
+        `N${planAmount}`,
+        `N${Number(planAmount || 0).toLocaleString()}`,
+      ].filter(Boolean)),
+    );
+    const statusVariants = Array.from(
+      new Set([
+        ...explicitStatusCandidates,
+        normalizedStatus,
+        userType,
+      ].filter(Boolean)),
+    );
+
+    const tryUpgrade = async () => {
+      let lastError: unknown = null;
+
+      for (const memberStatus of statusVariants) {
+        for (const selectedPlan of planVariants) {
+          try {
+            return await apiPost<{ amount?: string | number; charge?: string | number }>(
+              "/registration/upgrade/",
+              {
+                email,
+                phone_number: normalizedPhone,
+                full_name: fullName,
+                member_status: memberStatus,
+                premium_plan: selectedPlan,
+              },
+            );
+          } catch (error) {
+            lastError = error;
+          }
+        }
+      }
+
+      throw lastError;
     };
 
-    apiPost<{ amount?: string | number; charge?: string | number }>(
-      "/registration/upgrade/",
-      requestPayload,
-    )
+    tryUpgrade()
       .then((response) => {
         const amountFromApi = response.amount ?? response.charge;
         const resolvedAmount =
@@ -68,7 +180,19 @@ export default function UpgradeToPremiumPage() {
       })
       .catch((error) => {
         console.error(error);
-        alert("Upgrade failed. Please check your details and try again.");
+        if (error instanceof Error && error.message) {
+          if (
+            error.message.includes("No registration found with this email")
+          ) {
+            alert(
+              "No registration found with this email. Please use the same email used in Create Profile.",
+            );
+          } else {
+            alert(error.message);
+          }
+        } else {
+          alert("Upgrade failed. Please check your details and try again.");
+        }
       })
       .finally(() => setIsSubmitting(false));
   };
@@ -193,10 +317,10 @@ export default function UpgradeToPremiumPage() {
               placeholder="Select an option"
               onChange={setPremiumPlan}
               options={[
-                { value: "virtual_plan", label: "Virtual Plan(15,000 NGN)" },
-                { value: "day_pass_plan", label: "Day Pass Plan(18,000 NGN)" },
+                { value: "Virtual", label: "Virtual Plan(15,000 NGN)" },
+                { value: "Day Pass", label: "Day Pass Plan(18,000 NGN)" },
                 {
-                  value: "full_hotel_stay",
+                  value: "Full Hotel",
                   label: "Full Hotel Stay (20,000 NGN)",
                 },
               ]}

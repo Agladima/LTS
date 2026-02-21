@@ -56,15 +56,15 @@ function UpgradePremiumPaymentContent() {
           <div className="space-y-1 text-sm">
             <p className="flex items-center justify-between gap-3">
               <span className="font-semibold">Listeners Name:</span>
-              <span>[{fullName}]</span>
+              <span>{fullName}</span>
             </p>
             <p className="flex items-center justify-between gap-3">
               <span className="font-semibold">Email:</span>
-              <span>[{email}]</span>
+              <span>{email}</span>
             </p>
             <p className="flex items-center justify-between gap-3">
               <span className="font-semibold">User:</span>
-              <span>[{userType}]</span>
+              <span>{userType}</span>
             </p>
           </div>
 
@@ -73,11 +73,11 @@ function UpgradePremiumPaymentContent() {
           <div className="space-y-1 text-sm">
             <p className="flex items-center justify-between gap-3">
               <span className="font-semibold">Premium plan:</span>
-              <span>[{premiumPlan}]</span>
+              <span>{premiumPlan}</span>
             </p>
             <p className="flex items-center justify-between gap-3">
               <span className="font-semibold">Price:</span>
-              <span>[{price}]</span>
+              <span>{price}</span>
             </p>
           </div>
         </div>

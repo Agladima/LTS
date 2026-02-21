@@ -230,7 +230,12 @@ export default function ListeningProfileSection3Page() {
         "/registration/create/",
         createPayload,
       );
-      writeRegistrationResult(response);
+      writeRegistrationResult({
+        ...response,
+        email: mergedPayload.email ?? response.email ?? "",
+        fullName: mergedPayload.fullName ?? "",
+        phone: mergedPayload.phone ?? "",
+      });
       shouldOpenPopup = true;
     } catch (error) {
       console.error(error);
