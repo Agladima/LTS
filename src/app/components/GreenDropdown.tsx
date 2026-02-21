@@ -65,7 +65,7 @@ export default function GreenDropdown({
       {isOpen ? (
         <div
           role="listbox"
-          className="absolute z-30 mt-1 w-full overflow-hidden rounded-md border border-white/30 bg-black"
+          className="absolute z-[70] mt-1 w-full overflow-hidden rounded-md border border-white/30 bg-black"
         >
           {options.map((option) => {
             const isSelected = option.value === value;

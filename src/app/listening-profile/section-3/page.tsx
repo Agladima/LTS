@@ -700,7 +700,7 @@ export default function ListeningProfileSection3Page() {
 
       {showProfileCard && (
         <div
-          className="fixed inset-0 z-20 flex items-center justify-center bg-black/60 px-4"
+          className="fixed inset-0 z-20 flex items-start justify-center overflow-y-auto bg-black/60 px-4 py-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           onClick={() => setShowProfileCard(false)}
         >
           <div

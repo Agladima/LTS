@@ -43,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${spotifyMix.variable} antialiased`}>
-        <div className="pb-36 sm:pb-40">{children}</div>
+        <div className="pb-28 sm:pb-32">{children}</div>
         <BottomPlayerNav />
       </body>
     </html>
