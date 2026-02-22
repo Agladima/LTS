@@ -20,7 +20,13 @@ export default function ListeningProfilePage() {
   const [gender, setGender] = useState(savedDraft.gender ?? "");
   const [dob, setDob] = useState(savedDraft.dob ?? "");
   const [previewImage, setPreviewImage] = useState<string | null>(
-    savedDraft.profileImageUploaded ? "__uploaded__" : null,
+    savedDraft.profileImageData ?? null,
+  );
+  const [profileImageData, setProfileImageData] = useState(
+    savedDraft.profileImageData ?? "",
+  );
+  const [profileImageName, setProfileImageName] = useState(
+    savedDraft.profileImageName ?? "",
   );
 
   React.useEffect(() => {
@@ -30,9 +36,19 @@ export default function ListeningProfilePage() {
       phone,
       gender,
       dob,
-      profileImageUploaded: Boolean(previewImage),
+      profileImageUploaded: Boolean(profileImageData),
+      profileImageData,
+      profileImageName,
     });
-  }, [fullName, email, phone, gender, dob, previewImage]);
+  }, [
+    fullName,
+    email,
+    phone,
+    gender,
+    dob,
+    profileImageData,
+    profileImageName,
+  ]);
 
   React.useEffect(() => {
     return () => {
@@ -52,6 +68,14 @@ export default function ListeningProfilePage() {
 
     const objectUrl = URL.createObjectURL(file);
     setPreviewImage(objectUrl);
+    setProfileImageName(file.name);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = typeof reader.result === "string" ? reader.result : "";
+      setProfileImageData(dataUrl);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (

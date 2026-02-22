@@ -213,6 +213,11 @@ export default function ListeningProfileSection3Page() {
         emergencyContactRelationship.trim(),
       suggestions: mergedPayload.suggestions ?? "",
       marketing_consent: mergedPayload.marketingConsent ?? false,
+      profile_image: mergedPayload.profileImageData ?? "",
+      profile_picture: mergedPayload.profileImageData ?? "",
+      image: mergedPayload.profileImageData ?? "",
+      album_art: mergedPayload.profileImageData ?? "",
+      image_name: mergedPayload.profileImageName ?? "",
     };
 
     createPayload.gender =

@@ -3,6 +3,8 @@ export const REGISTRATION_RESULT_KEY = "lts_registration_result";
 
 export type RegistrationDraft = {
   profileImageUploaded?: boolean;
+  profileImageData?: string;
+  profileImageName?: string;
   fullName?: string;
   email?: string;
   phone?: string;
@@ -37,9 +39,13 @@ export const readRegistrationDraft = (): RegistrationDraft => {
 
 export const writeRegistrationDraft = (partial: RegistrationDraft) => {
   if (!isBrowser()) return;
-  const current = readRegistrationDraft();
-  const next = { ...current, ...partial };
-  window.localStorage.setItem(REGISTRATION_DRAFT_KEY, JSON.stringify(next));
+  try {
+    const current = readRegistrationDraft();
+    const next = { ...current, ...partial };
+    window.localStorage.setItem(REGISTRATION_DRAFT_KEY, JSON.stringify(next));
+  } catch (error) {
+    console.error("Failed to store registration draft:", error);
+  }
 };
 
 export const writeRegistrationResult = (result: unknown) => {
