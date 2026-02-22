@@ -11,6 +11,7 @@ import { readRegistrationDraft } from "@/app/lib/registrationStorage";
 export default function BottomPlayerNav() {
   const router = useRouter();
   const pathname = usePathname();
+  const eggAudioRef = React.useRef<HTMLAudioElement | null>(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = React.useState(false);
   const isWelcomePage = pathname === "/welcome";
   const isStatisticsPage = pathname === "/statistics";
@@ -81,6 +82,20 @@ export default function BottomPlayerNav() {
     router.push("/listening-profile");
   };
 
+  const handlePrimaryButtonClick = () => {
+    if (isWelcomePage || isSettingsPage || isStatisticsPage) {
+      const audio = eggAudioRef.current;
+      if (audio) {
+        audio.currentTime = 0;
+        void audio.play().catch(() => {
+          // Ignore play blocking errors from strict browser policies.
+        });
+      }
+    }
+
+    handlePrimaryAction();
+  };
+
   const handlePreviousAction = () => {
     if (isListeningProfileStep3Page) {
       router.push("/listening-profile/section-2");
@@ -96,6 +111,18 @@ export default function BottomPlayerNav() {
     }
     router.back();
   };
+
+  React.useEffect(() => {
+    eggAudioRef.current = new Audio("/egg.mp3");
+    eggAudioRef.current.preload = "auto";
+
+    return () => {
+      if (eggAudioRef.current) {
+        eggAudioRef.current.pause();
+        eggAudioRef.current = null;
+      }
+    };
+  }, []);
 
   React.useEffect(() => {
     const updateFromBody = () => {
@@ -174,7 +201,7 @@ export default function BottomPlayerNav() {
                 {!isListeningProfileStep3Page ? (
                   <button
                     type="button"
-                    onClick={handlePrimaryAction}
+                    onClick={handlePrimaryButtonClick}
                     className={`rounded-full p-1.5 transition ${
                       isWelcomePage || isSettingsPage || isStatisticsPage
                         ? "bg-[#1DB954] text-black hover:bg-[#1ED760]"
