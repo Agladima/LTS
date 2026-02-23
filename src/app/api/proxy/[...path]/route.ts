@@ -19,7 +19,7 @@ const forwardRequest = async (
 
   const incomingContentType = request.headers.get("content-type");
   const shouldForwardBody = !["GET", "HEAD"].includes(request.method);
-  const body = shouldForwardBody ? await request.text() : undefined;
+  const body = shouldForwardBody ? await request.arrayBuffer() : undefined;
 
   const backendResponse = await fetch(targetUrl, {
     method: request.method,

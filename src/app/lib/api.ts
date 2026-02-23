@@ -65,3 +65,36 @@ export const apiPost = async <TResponse>(
 
   return (await response.json()) as TResponse;
 };
+
+export const apiPostForm = async <TResponse>(
+  path: string,
+  formData: FormData,
+): Promise<TResponse> => {
+  const url = buildUrl(path);
+  let response: Response;
+
+  try {
+    response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+      body: formData,
+    });
+  } catch (error) {
+    throw new Error(
+      `Failed to fetch ${url}. Check backend availability, CORS, and NEXT_PUBLIC_API_BASE_URL. ${String(
+        error,
+      )}`,
+    );
+  }
+
+  if (!response.ok) {
+    const rawError = await response.text();
+    throw new Error(
+      `POST ${path} failed with status ${response.status}: ${rawError}`,
+    );
+  }
+
+  return (await response.json()) as TResponse;
+};

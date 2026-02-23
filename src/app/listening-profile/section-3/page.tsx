@@ -5,7 +5,7 @@ import Image from "next/image";
 import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import GreenDropdown from "@/app/components/GreenDropdown";
-import { apiPost } from "@/app/lib/api";
+import { apiPostForm } from "@/app/lib/api";
 import {
   clearRegistrationDraft,
   readRegistrationDraft,
@@ -213,10 +213,6 @@ export default function ListeningProfileSection3Page() {
         emergencyContactRelationship.trim(),
       suggestions: mergedPayload.suggestions ?? "",
       marketing_consent: mergedPayload.marketingConsent ?? false,
-      profile_image: mergedPayload.profileImageData ?? "",
-      profile_picture: mergedPayload.profileImageData ?? "",
-      image: mergedPayload.profileImageData ?? "",
-      album_art: mergedPayload.profileImageData ?? "",
       image_name: mergedPayload.profileImageName ?? "",
     };
 
@@ -229,11 +225,31 @@ export default function ListeningProfileSection3Page() {
     writeRegistrationDraft(mergedPayload);
 
     let shouldOpenPopup = false;
+    const createFormData = new FormData();
+    Object.entries(createPayload).forEach(([key, value]) => {
+      createFormData.append(key, String(value ?? ""));
+    });
+
+    if (mergedPayload.profileImageData?.startsWith("data:")) {
+      try {
+        const imageBlob = await fetch(mergedPayload.profileImageData).then((r) =>
+          r.blob(),
+        );
+        const filename =
+          mergedPayload.profileImageName?.trim() || "profile-image.jpg";
+        createFormData.append("profile_image", imageBlob, filename);
+        createFormData.append("profile_picture", imageBlob, filename);
+        createFormData.append("image", imageBlob, filename);
+        createFormData.append("album_art", imageBlob, filename);
+      } catch (error) {
+        console.error("Failed to attach profile image:", error);
+      }
+    }
 
     try {
-      const response = await apiPost<RegistrationCreateResponse>(
+      const response = await apiPostForm<RegistrationCreateResponse>(
         "/registration/create/",
-        createPayload,
+        createFormData,
       );
       writeRegistrationResult({
         ...response,
@@ -254,9 +270,9 @@ export default function ListeningProfileSection3Page() {
         normalized.includes("internal server error")
       ) {
         try {
-          const retryResponse = await apiPost<RegistrationCreateResponse>(
+          const retryResponse = await apiPostForm<RegistrationCreateResponse>(
             "/registration/create/",
-            createPayload,
+            createFormData,
           );
           writeRegistrationResult(retryResponse);
           shouldOpenPopup = true;
