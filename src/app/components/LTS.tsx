@@ -10,7 +10,6 @@ const LTS = () => {
 
   React.useEffect(() => {
     router.prefetch("/welcome");
-    router.prefetch("/upgrade-premium");
   }, [router]);
 
   const handleFirstInteraction = () => {
@@ -27,7 +26,7 @@ const LTS = () => {
 
   const goToUpgradePremium = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    router.push("/upgrade-premium");
+    window.open("https://forms.gle/yBhhAgi2U3DGXSpW9", "_blank", "noopener,noreferrer");
   };
 
   return (

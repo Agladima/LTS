@@ -811,7 +811,13 @@ export default function ListeningProfileSection3Page() {
             </button>
             <button
               type="button"
-              onClick={() => router.push("/upgrade-premium")}
+              onClick={() =>
+                window.open(
+                  "https://forms.gle/yBhhAgi2U3DGXSpW9",
+                  "_blank",
+                  "noopener,noreferrer",
+                )
+              }
               className="w-full rounded-full bg-[#DADADA] px-5 py-2.5 text-sm font-semibold text-black"
             >
               Upgrade to premium
