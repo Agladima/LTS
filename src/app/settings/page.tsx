@@ -14,7 +14,7 @@ const creditMembers = [
   {
     image: "/francis.jpeg",
     name: "Francis Adalikwu",
-    title: "Marketing Manager - 26.227",
+    title: "Marketing Manager - 26.27",
   },
   {
     image: "/ocp.png",
