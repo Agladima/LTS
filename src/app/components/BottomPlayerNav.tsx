@@ -115,6 +115,7 @@ export default function BottomPlayerNav() {
   React.useEffect(() => {
     eggAudioRef.current = new Audio("/egg.mp3");
     eggAudioRef.current.preload = "auto";
+    eggAudioRef.current.loop = true;
 
     return () => {
       if (eggAudioRef.current) {
