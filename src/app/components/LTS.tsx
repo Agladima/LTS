@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { incrementPremiumListenersLocalCount } from "@/app/lib/registrationStorage";
 
 const LTS = () => {
   const [isSecondScreen, setIsSecondScreen] = useState(false);
@@ -26,6 +27,7 @@ const LTS = () => {
 
   const goToUpgradePremium = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
+    incrementPremiumListenersLocalCount();
     window.open("https://forms.gle/yBhhAgi2U3DGXSpW9", "_blank", "noopener,noreferrer");
   };
 
