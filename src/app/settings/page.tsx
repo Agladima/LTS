@@ -4,6 +4,7 @@ import React from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { apiGet } from "@/app/lib/api";
+import { readPremiumListenersLocalCount } from "@/app/lib/registrationStorage";
 import {
   getPremiumListenersCount,
   type RegistrationStatsResponse,
@@ -46,7 +47,11 @@ export default function SettingsPage() {
           "/registration/stats/",
         );
         if (!isMounted) return;
-        setPremiumListeners(getPremiumListenersCount(stats));
+        const backendPremiumListeners = getPremiumListenersCount(stats);
+        const localPremiumListeners = readPremiumListenersLocalCount();
+        setPremiumListeners(
+          Math.max(backendPremiumListeners, localPremiumListeners),
+        );
       } catch (error) {
         console.error("Failed to load premium listeners count:", error);
       }

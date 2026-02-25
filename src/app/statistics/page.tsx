@@ -4,6 +4,10 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { apiGet } from "@/app/lib/api";
 import {
+  readPremiumListenersLocalCount,
+  readRegistrationResult,
+} from "@/app/lib/registrationStorage";
+import {
   getListeningProfilesCount,
   getPremiumListenersCount,
   type RegistrationStatsResponse,
@@ -66,8 +70,21 @@ export default function StatisticsPage() {
           "/registration/stats/",
         );
         if (!isMounted) return;
-        setListeningProfiles(getListeningProfilesCount(stats));
-        setPremiumListeners(getPremiumListenersCount(stats));
+        const localRegistrationResult =
+          readRegistrationResult<{ registration_id?: string | number }>();
+        const backendListeningProfiles = getListeningProfilesCount(stats);
+        const localCreatedCount = localRegistrationResult?.registration_id
+          ? 1
+          : 0;
+        const backendPremiumListeners = getPremiumListenersCount(stats);
+        const localPremiumListeners = readPremiumListenersLocalCount();
+
+        setListeningProfiles(
+          Math.max(backendListeningProfiles, localCreatedCount),
+        );
+        setPremiumListeners(
+          Math.max(backendPremiumListeners, localPremiumListeners),
+        );
       } catch (error) {
         console.error("Failed to load registration stats:", error);
       }

@@ -6,6 +6,7 @@ import { BsBank } from "react-icons/bs";
 import { IoMdArrowBack } from "react-icons/io";
 import { RxPerson } from "react-icons/rx";
 import { useRouter, useSearchParams } from "next/navigation";
+import { incrementPremiumListenersLocalCount } from "@/app/lib/registrationStorage";
 
 function UpgradePremiumPaymentContent() {
   const router = useRouter();
@@ -17,6 +18,16 @@ function UpgradePremiumPaymentContent() {
   const userType = searchParams.get("userType") ?? "Membership status";
   const premiumPlan = searchParams.get("premiumPlan") ?? "Premium plan name";
   const price = searchParams.get("price") ?? "N20,000";
+
+  const handlePayNow = () => {
+    if (selectedMethod !== "bank_transfer") {
+      alert("Please select a payment method.");
+      return;
+    }
+
+    incrementPremiumListenersLocalCount();
+    window.open("https://wa.link/2dy5ud", "_blank", "noopener,noreferrer");
+  };
 
   return (
     <main className="min-h-screen bg-black px-3 py-5 text-white sm:px-6 sm:py-10">
@@ -115,7 +126,7 @@ function UpgradePremiumPaymentContent() {
 
           <button
             type="button"
-            onClick={() => window.open("https://wa.link/2dy5ud", "_blank", "noopener,noreferrer")}
+            onClick={handlePayNow}
             className="mx-auto mt-5 block w-[52%] rounded-full bg-[#1DB954] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#1ED760]"
           >
             Pay now

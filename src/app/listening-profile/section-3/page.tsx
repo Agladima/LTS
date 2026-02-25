@@ -172,9 +172,8 @@ export default function ListeningProfileSection3Page() {
       return;
     }
 
-    // Keep existing client keys, and also send backend-friendly aliases.
+    // Send only backend-relevant fields (exclude large client-only draft fields).
     const createPayload = {
-      ...mergedPayload,
       name: mergedPayload.fullName ?? "",
       full_name: mergedPayload.fullName ?? "",
       email: mergedPayload.email ?? "",
@@ -213,7 +212,10 @@ export default function ListeningProfileSection3Page() {
         emergencyContactRelationship.trim(),
       suggestions: mergedPayload.suggestions ?? "",
       marketing_consent: mergedPayload.marketingConsent ?? false,
-      image_name: mergedPayload.profileImageName ?? "",
+      photo_base64:
+        mergedPayload.profileImageData?.startsWith("data:")
+          ? mergedPayload.profileImageData
+          : "",
     };
 
     createPayload.gender =
@@ -238,9 +240,6 @@ export default function ListeningProfileSection3Page() {
         const filename =
           mergedPayload.profileImageName?.trim() || "profile-image.jpg";
         createFormData.append("profile_image", imageBlob, filename);
-        createFormData.append("profile_picture", imageBlob, filename);
-        createFormData.append("image", imageBlob, filename);
-        createFormData.append("album_art", imageBlob, filename);
       } catch (error) {
         console.error("Failed to attach profile image:", error);
       }

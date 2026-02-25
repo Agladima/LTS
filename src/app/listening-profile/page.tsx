@@ -10,6 +10,10 @@ import {
   writeRegistrationDraft,
 } from "@/app/lib/registrationStorage";
 
+const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
+const MAX_IMAGE_EDGE = 1400;
+const JPEG_QUALITY = 0.85;
+
 export default function ListeningProfilePage() {
   const router = useRouter();
   const savedDraft = React.useMemo(() => readRegistrationDraft(), []);
@@ -50,32 +54,74 @@ export default function ListeningProfilePage() {
     profileImageName,
   ]);
 
-  React.useEffect(() => {
-    return () => {
-      if (previewImage) {
-        URL.revokeObjectURL(previewImage);
-      }
-    };
-  }, [previewImage]);
+  const fileToDataUrl = (blob: Blob) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () =>
+        resolve(typeof reader.result === "string" ? reader.result : "");
+      reader.onerror = () => reject(new Error("Failed to read image file."));
+      reader.readAsDataURL(blob);
+    });
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const compressImage = async (file: File): Promise<string> => {
+    const sourceDataUrl = await fileToDataUrl(file);
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error("Failed to load image."));
+      img.src = sourceDataUrl;
+    });
+
+    const scale = Math.min(
+      1,
+      MAX_IMAGE_EDGE / Math.max(image.width, image.height),
+    );
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(image.width * scale));
+    canvas.height = Math.max(1, Math.round(image.height * scale));
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      return sourceDataUrl;
+    }
+
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    return new Promise<string>((resolve) => {
+      canvas.toBlob(
+        async (blob) => {
+          if (!blob) {
+            resolve(sourceDataUrl);
+            return;
+          }
+          resolve(await fileToDataUrl(blob));
+        },
+        "image/jpeg",
+        JPEG_QUALITY,
+      );
+    });
+  };
+
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (previewImage) {
-      URL.revokeObjectURL(previewImage);
+    if (file.size > MAX_UPLOAD_BYTES) {
+      alert("Image is too large. Please upload an image under 8MB.");
+      event.target.value = "";
+      return;
     }
 
-    const objectUrl = URL.createObjectURL(file);
-    setPreviewImage(objectUrl);
-    setProfileImageName(file.name);
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = typeof reader.result === "string" ? reader.result : "";
+    try {
+      const dataUrl = await compressImage(file);
+      setPreviewImage(dataUrl);
       setProfileImageData(dataUrl);
-    };
-    reader.readAsDataURL(file);
+      setProfileImageName(file.name);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to process image. Please try another file.");
+    }
   };
 
   return (

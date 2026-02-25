@@ -26,8 +26,14 @@ export const getListeningProfilesCount = (
     "total_registrations",
     "registrations",
     "registration_count",
+    "total_registration_count",
+    "total_registered",
+    "total_users",
+    "users",
+    "count",
     "total_profiles",
     "profiles",
+    "profile_count",
     "listening_profiles",
   ]);
 
@@ -38,6 +44,8 @@ export const getPremiumListenersCount = (
     "premium_listeners",
     "premium_count",
     "total_premium",
+    "premium_users",
+    "upgraded_users",
     "paid_registrations",
     "payments",
   ]);
