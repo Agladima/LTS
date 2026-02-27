@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import BottomPlayerNav from "./components/BottomPlayerNav";
 import "./globals.css";
 
 const spotifyMix = localFont({
@@ -36,15 +35,17 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={`${spotifyMix.variable} antialiased`}>
-        <div className="pb-28 sm:pb-32">{children}</div>
-        <BottomPlayerNav />
+        <main className="flex min-h-screen items-center justify-center bg-black px-4 text-center text-white">
+          <h1 className="text-2xl font-bold sm:text-4xl">
+            SITE UNDER MAINTAINANCE
+          </h1>
+        </main>
       </body>
     </html>
   );
